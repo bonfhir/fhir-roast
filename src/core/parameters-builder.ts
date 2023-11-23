@@ -1,14 +1,46 @@
 import { Parameters, ParametersParameter } from "@bonfhir/core/r5";
+import { XMLParser } from "fast-xml-parser";
 
 export class ParametersBuilder {
-  params: URLSearchParams;
   url: URL;
+  headers: Headers;
+  method: string;
+  params: URLSearchParams;
+  body: any;
 
   constructor(req: Request) {
     this.url = new URL(req.url);
+    this.headers = req.headers;
+    this.method = req.method;
     this.params = this.url.searchParams;
+
+    // TODO: this should probably be synchronous
+    if (req.body && req.method !== "GET") {
+      this.parseBody(req.body).then((body) => {
+        if (req.headers.get("content-type") === "application/json")
+          this.body = JSON.parse(body);
+
+        if (req.headers.get("content-type") === "application/fhir+json")
+          this.body = JSON.parse(body);
+
+        if (req.headers.get("content-type") === "application/xml") {
+          const parser = new XMLParser();
+          this.body = parser.parse(body);
+        }
+      });
+    }
   }
 
+  private async parseBody(body: ReadableStream<string>) {
+    const buffer = [];
+    for await (const chunk of body) {
+      buffer.push(chunk);
+    }
+    const bodyString = buffer.join("");
+    return bodyString;
+  }
+
+  // TODO: handle POST body
   getParameters(): Parameters {
     const parameters: ParametersParameter[] = [];
 

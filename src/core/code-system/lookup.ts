@@ -1,31 +1,37 @@
-import { Operation, OperationOutcome } from "@bonfhir/core/r5";
+import {
+  Operation,
+  OperationOutcome,
+  ParametersParameter,
+} from "@bonfhir/core/r5";
 import { Parameters } from "@bonfhir/core/r5";
-import { SNOMEDRecord } from "../snomed/import";
 import { Database } from "../database";
 
 export interface CodeSystemLookupOperation extends Operation {
-  parameters:
+  parameters?:
     | {
         resourceType: "Parameters";
-        parameter: [
-          {
-            name: "code";
-            valueCode: string;
-          },
-          {
-            name: "system";
-            valueUri: string;
-          },
-          {
-            name: "version";
-            valueString: string;
-          }
-        ];
+        parameter:
+          | [
+              {
+                name: "code";
+                valueCode: string;
+              },
+              {
+                name: "system";
+                valueUri: string;
+              },
+              {
+                name: "version";
+                valueString: string;
+              }
+            ]
+          | ParametersParameter[];
       }
     | Parameters;
 }
+
 export type CodeSystemLookupOperationParameters =
-  CodeSystemLookupOperation["parameters"];
+  | CodeSystemLookupOperation["parameters"];
 
 const reducer = (acc: any, parameter: any) => {
   if (parameter.name === "code") {
@@ -43,7 +49,7 @@ const reducer = (acc: any, parameter: any) => {
 export function lookup(
   parameters: CodeSystemLookupOperationParameters
 ): Promise<Parameters | OperationOutcome> {
-  const { code, system, version } = (parameters.parameter ?? []).reduce(
+  const { code, system, version } = (parameters?.parameter ?? []).reduce(
     reducer,
     {
       code: "",

@@ -31,7 +31,7 @@ export class Database {
     this.getDatabase();
   }
 
-  static lookup(code: string, system: string, version: string) {
+  static lookup(code: string, system: string, version?: string) {
     const database = this.getDatabase();
     return database.lookup(code, system, version);
   }

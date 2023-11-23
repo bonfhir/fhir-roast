@@ -4,7 +4,6 @@ import { lookup } from "./code-system/lookup";
 import { ParametersBuilder } from "./parameters-builder";
 import { responder } from "./responder";
 import { ILogObj, Logger } from "tslog";
-import { SNOMEDRecord } from "./snomed/import";
 
 export type Format = "json" | "xml";
 
@@ -40,66 +39,25 @@ export class Router {
       );
 
     if (url.pathname === "/CodeSystem/$validate-code")
-      return responder(
-        <OperationOutcome>{
-          resourceType: "OperationOutcome",
-          issue: [
-            {
-              severity: "error",
-              code: "not-supported",
-              diagnostics: "Not supported",
-            },
-          ],
-        },
-        (params.get("_format") ?? "json") as Format
-      );
+      throw new Error("Not implemented");
 
     if (url.pathname === "/CodeSystem/$subsumes")
-      return responder(
-        <OperationOutcome>{
-          resourceType: "OperationOutcome",
-          issue: [
-            {
-              severity: "error",
-              code: "not-supported",
-              diagnostics: "Not supported",
-            },
-          ],
-        },
-        (params.get("_format") ?? "json") as Format
-      );
+      throw new Error("Not implemented");
 
     if (url.pathname === "/ValueSet/$expand")
-      return responder(
-        <OperationOutcome>{
-          resourceType: "OperationOutcome",
-          issue: [
-            {
-              severity: "error",
-              code: "not-supported",
-              diagnostics: "Not supported",
-            },
-          ],
-        },
-        (params.get("_format") ?? "json") as Format
-      );
+      throw new Error("Not implemented");
 
     if (url.pathname === "/ValueSet/$validate-code")
-      return responder(
-        <OperationOutcome>{
-          resourceType: "OperationOutcome",
-          issue: [
-            {
-              severity: "error",
-              code: "not-supported",
-              diagnostics: "Not supported",
-            },
-          ],
-        },
-        (params.get("_format") ?? "json") as Format
-      );
+      throw new Error("Not implemented");
 
     if (url.pathname === "/ConceptMap/$translate")
+      throw new Error("Not implemented");
+
+    return new Response("404!", { status: 404 });
+  }
+
+  error(error: Error) {
+    if (error.message === "Not implemented")
       return responder(
         <OperationOutcome>{
           resourceType: "OperationOutcome",
@@ -111,9 +69,10 @@ export class Router {
             },
           ],
         },
-        (params.get("_format") ?? "json") as Format
+        "json"
       );
 
-    return new Response("404!", { status: 404 });
+    this.log.error(error);
+    return new Response(error.message, { status: 500 });
   }
 }

@@ -15,6 +15,7 @@ Database.preload();
 const server = Bun.serve({
   port: 3000,
   fetch: router.routes,
+  error: router.error,
 });
 
 console.log(`Listening on http://localhost:${server.port} ...`);
