@@ -1,18 +1,16 @@
-import { CodeSystem } from "@bonfhir/core/r5";
+import { OperationOutcome } from "@bonfhir/core/r5";
 import { capabilityStatement } from "./capability-statement";
+import { lookup } from "./code-system/lookup";
+import { ParametersBuilder } from "./parameters-builder";
 import { responder } from "./responder";
 
 export type Format = "json" | "xml";
 
-const codeSystem: CodeSystem = {
-  resourceType: "CodeSystem",
-  content: "complete",
-  status: "active",
-};
-
-export const router = (req: Request) => {
+export const router = async (req: Request) => {
   const url = new URL(req.url);
   const params = url.searchParams;
+
+  const paramsBuilder = new ParametersBuilder(req);
 
   if (url.pathname === "/")
     return responder(
@@ -27,22 +25,85 @@ export const router = (req: Request) => {
     );
 
   if (url.pathname === "/CodeSystem/$lookup")
-    return responder(codeSystem, (params.get("_format") ?? "json") as Format);
+    return responder(
+      await lookup(paramsBuilder.getParameters()),
+      (params.get("_format") ?? "json") as Format
+    );
 
   if (url.pathname === "/CodeSystem/$validate-code")
-    return responder(codeSystem, (params.get("_format") ?? "json") as Format);
+    return responder(
+      <OperationOutcome>{
+        resourceType: "OperationOutcome",
+        issue: [
+          {
+            severity: "error",
+            code: "not-supported",
+            diagnostics: "Not supported",
+          },
+        ],
+      },
+      (params.get("_format") ?? "json") as Format
+    );
 
   if (url.pathname === "/CodeSystem/$subsumes")
-    return responder(codeSystem, (params.get("_format") ?? "json") as Format);
+    return responder(
+      <OperationOutcome>{
+        resourceType: "OperationOutcome",
+        issue: [
+          {
+            severity: "error",
+            code: "not-supported",
+            diagnostics: "Not supported",
+          },
+        ],
+      },
+      (params.get("_format") ?? "json") as Format
+    );
 
   if (url.pathname === "/ValueSet/$expand")
-    return responder(codeSystem, (params.get("_format") ?? "json") as Format);
+    return responder(
+      <OperationOutcome>{
+        resourceType: "OperationOutcome",
+        issue: [
+          {
+            severity: "error",
+            code: "not-supported",
+            diagnostics: "Not supported",
+          },
+        ],
+      },
+      (params.get("_format") ?? "json") as Format
+    );
 
   if (url.pathname === "/ValueSet/$validate-code")
-    return responder(codeSystem, (params.get("_format") ?? "json") as Format);
+    return responder(
+      <OperationOutcome>{
+        resourceType: "OperationOutcome",
+        issue: [
+          {
+            severity: "error",
+            code: "not-supported",
+            diagnostics: "Not supported",
+          },
+        ],
+      },
+      (params.get("_format") ?? "json") as Format
+    );
 
   if (url.pathname === "/ConceptMap/$translate")
-    return responder(codeSystem, (params.get("_format") ?? "json") as Format);
+    return responder(
+      <OperationOutcome>{
+        resourceType: "OperationOutcome",
+        issue: [
+          {
+            severity: "error",
+            code: "not-supported",
+            diagnostics: "Not supported",
+          },
+        ],
+      },
+      (params.get("_format") ?? "json") as Format
+    );
 
   return new Response("404!", { status: 404 });
 };

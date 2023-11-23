@@ -1,8 +1,9 @@
+import { Resource } from "@bonfhir/core/r5";
 import { renderer } from "./renderer";
-import { Format } from "./server";
+import { Format } from "./router";
 
-export type Responder = (payload: any, format: Format) => Response;
-export const responder = (payload: any, format: Format) => {
+export type Responder = (payload: Resource, format: Format) => Response;
+export const responder = (payload: Resource, format: Format) => {
   if (format === "json")
     return new Response(renderer(payload, format), {
       status: 200,
