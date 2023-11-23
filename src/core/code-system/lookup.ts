@@ -1,5 +1,7 @@
 import { Operation, OperationOutcome } from "@bonfhir/core/r5";
 import { Parameters } from "@bonfhir/core/r5";
+import { SNOMEDRecord } from "../snomed/import";
+import { Database } from "../database";
 
 export interface CodeSystemLookupOperation extends Operation {
   parameters:
@@ -49,33 +51,36 @@ export function lookup(
       version: "",
     }
   );
+
+  const record = Database.lookup(code, system, version);
+
+  if (!record) {
+    return Promise.resolve({
+      resourceType: "OperationOutcome",
+      issue: [
+        {
+          severity: "error",
+          code: "not-found",
+          diagnostics: `Code ${code} not found`,
+        },
+      ],
+    });
+  }
+
   return Promise.resolve({
     resourceType: "Parameters",
     parameter: [
       {
         name: "name",
-        valueString: "LOINC",
+        valueString: "SNOMED CT",
       },
       {
         name: "version",
-        valueString: "2.48",
+        valueString: "1000124_20230301",
       },
       {
         name: "display",
-        valueString: "Bicarbonate [Moles/volume] in Serum",
-      },
-      {
-        name: "abstract",
-        valueString: "false",
-      },
-      {
-        name: "designation",
-        part: [
-          {
-            name: "value",
-            valueString: "Bicarbonate [Moles/volume] in Serum",
-          },
-        ],
+        valueString: record.term,
       },
     ],
   });
