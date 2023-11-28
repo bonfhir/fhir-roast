@@ -1,4 +1,4 @@
-import { Parameters, ParametersParameter } from "@bonfhir/core/r5";
+import { Coding, Parameters, ParametersParameter } from "@bonfhir/core/r5";
 
 const reducer = (acc: any, parameter: ParametersParameter) => {
   if (parameter.name === "code") {
@@ -13,7 +13,7 @@ const reducer = (acc: any, parameter: ParametersParameter) => {
   return acc;
 };
 
-export function parametersReducer(parameters: Parameters | undefined) {
+export function parametersReducer(parameters: Parameters | undefined): Coding {
   return (parameters?.parameter ?? []).reduce(reducer, {
     code: "",
     system: "",

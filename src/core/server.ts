@@ -1,7 +1,7 @@
 import { ILogObj, Logger } from "tslog";
 
 import { Router } from "./router";
-import { Database } from "./database";
+import { NaiveDatabase } from "../database";
 
 const log = new Logger<ILogObj>({
   minLevel: process.env.LOG_LEVEL ? parseInt(process.env.LOG_LEVEL) : 3,
@@ -10,7 +10,7 @@ const log = new Logger<ILogObj>({
 const router = new Router(log);
 
 // preload database
-Database.preload();
+NaiveDatabase.preload();
 
 const server = Bun.serve({
   port: 3000,

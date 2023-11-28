@@ -4,7 +4,7 @@ import {
   ParametersParameter,
 } from "@bonfhir/core/r5";
 import { Parameters } from "@bonfhir/core/r5";
-import { Database } from "../database";
+import { NaiveDatabase } from "../../database";
 import { parametersReducer } from "../parameters";
 
 export interface CodeSystemLookupOperation extends Operation {
@@ -39,9 +39,9 @@ export function lookup(
 ): Promise<Parameters | OperationOutcome> {
   const { code, system, version } = parametersReducer(parameters);
 
-  const record = Database.lookup(code, system, version);
+  const concept = NaiveDatabase.lookup({ code, system, version });
 
-  if (!record) {
+  if (!concept) {
     return Promise.resolve({
       resourceType: "OperationOutcome",
       issue: [
@@ -59,15 +59,15 @@ export function lookup(
     parameter: [
       {
         name: "name",
-        valueString: "SNOMED CT",
+        valueString: concept.coding![0].display,
       },
       {
         name: "version",
-        valueString: "1000124_20230301",
+        valueString: concept.coding![0].version,
       },
       {
         name: "display",
-        valueString: record.term,
+        valueString: concept.coding![0].code,
       },
     ],
   });

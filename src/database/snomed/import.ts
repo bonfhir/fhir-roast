@@ -1,15 +1,10 @@
 import { readFileSync } from "fs";
+import { TerminologyRecord } from "../terminology-record";
 
-export type SNOMEDRecord = {
-  conceptId: string;
-  term: string;
-  system: string;
-};
-
-export function importSNOMEDRecords(filePath: string): SNOMEDRecord[] {
+export function importSNOMEDRecords(filePath: string): TerminologyRecord[] {
   const file = readFileSync(filePath, "utf8");
 
-  let records: SNOMEDRecord[] = [];
+  let records: TerminologyRecord[] = [];
   let lineNumber = 0;
 
   for (const line of file.split("\n")) {
