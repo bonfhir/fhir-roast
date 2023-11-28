@@ -20,7 +20,7 @@ export class Database {
     return Database.instance;
   }
 
-  lookup(code: string, system: string, version?: string) {
+  lookup(code?: string, system?: string, version?: string) {
     return (this.records ?? []).filter(
       (record) =>
         record.conceptId === code && system === "http://snomed.info/sct"
@@ -31,7 +31,7 @@ export class Database {
     this.getDatabase();
   }
 
-  static lookup(code: string, system: string, version?: string) {
+  static lookup(code?: string, system?: string, version?: string) {
     const database = this.getDatabase();
     return database.lookup(code, system, version);
   }

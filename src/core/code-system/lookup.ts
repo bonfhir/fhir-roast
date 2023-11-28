@@ -5,6 +5,7 @@ import {
 } from "@bonfhir/core/r5";
 import { Parameters } from "@bonfhir/core/r5";
 import { Database } from "../database";
+import { parametersReducer } from "../parameters";
 
 export interface CodeSystemLookupOperation extends Operation {
   parameters?:
@@ -33,30 +34,10 @@ export interface CodeSystemLookupOperation extends Operation {
 export type CodeSystemLookupOperationParameters =
   | CodeSystemLookupOperation["parameters"];
 
-const reducer = (acc: any, parameter: any) => {
-  if (parameter.name === "code") {
-    return { ...acc, code: parameter.valueCode };
-  }
-  if (parameter.name === "system") {
-    return { ...acc, system: parameter.valueUri };
-  }
-  if (parameter.name === "version") {
-    return { ...acc, version: parameter.valueString };
-  }
-  return acc;
-};
-
 export function lookup(
   parameters: CodeSystemLookupOperationParameters
 ): Promise<Parameters | OperationOutcome> {
-  const { code, system, version } = (parameters?.parameter ?? []).reduce(
-    reducer,
-    {
-      code: "",
-      system: "",
-      version: "",
-    }
-  );
+  const { code, system, version } = parametersReducer(parameters);
 
   const record = Database.lookup(code, system, version);
 

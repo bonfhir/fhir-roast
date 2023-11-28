@@ -176,3 +176,6 @@ dist
 
 # don't commit anything in the data folder
 data/*
+
+# build
+build/*

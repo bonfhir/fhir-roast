@@ -1,0 +1,18 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "cSpell.words": [
+      "bonfhir",
+      "Codeable",
+      "fhir",
+      "LOINC",
+      "outdir",
+      "SNOMED",
+      "tslog"
+    ]
+  }
+}
