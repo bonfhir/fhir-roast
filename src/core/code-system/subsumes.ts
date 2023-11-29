@@ -1,21 +1,24 @@
 import {
-  Coding,
   Operation,
   OperationOutcome,
+  Parameters,
   ParametersParameter,
 } from "@bonfhir/core/r5";
-import { Parameters } from "@bonfhir/core/r5";
-import { lookupParametersReducer } from "../parameters";
 import { TerminologyDatabase } from "../../database/terminology-database";
+import { subsumesParametersReducer } from "../parameters";
 
-export interface CodeSystemLookupOperation extends Operation {
+export interface CodeSystemSubsumesOperation extends Operation {
   parameters?:
     | {
         resourceType: "Parameters";
         parameter:
           | [
               {
-                name: "code";
+                name: "codeA";
+                valueCode: string;
+              },
+              {
+                name: "codeB";
                 valueCode: string;
               },
               {
@@ -32,44 +35,35 @@ export interface CodeSystemLookupOperation extends Operation {
     | Parameters;
 }
 
-export type CodeSystemLookupOperationParameters =
-  | CodeSystemLookupOperation["parameters"];
+export type CodeSystemSubsumesOperationParameters =
+  | CodeSystemSubsumesOperation["parameters"];
 
-export function lookup(
+export function subsumes(
   database: TerminologyDatabase,
-  parameters: CodeSystemLookupOperationParameters
+  parameters: CodeSystemSubsumesOperationParameters
 ): Promise<Parameters | OperationOutcome> {
-  const { code, system, version } = lookupParametersReducer(parameters);
-  const concept = database.lookup({ code, system, version });
+  // TODO: Implement subsumes
+  const { codeA, codeB, system, version } =
+    subsumesParametersReducer(parameters);
+  const concept = database.subsumes({ codeA, codeB, system, version });
 
   if (!concept) {
+    // TODO
     return Promise.resolve({
       resourceType: "OperationOutcome",
       issue: [
         {
           severity: "error",
           code: "not-found",
-          diagnostics: `Code ${code} not found`,
+          diagnostics: `Code ${codeA} not found`,
         },
       ],
     });
   }
 
+  // TODO
   return Promise.resolve({
     resourceType: "Parameters",
-    parameter: [
-      {
-        name: "name",
-        valueString: concept.coding![0].display,
-      },
-      {
-        name: "version",
-        valueString: concept.coding![0].version,
-      },
-      {
-        name: "display",
-        valueString: concept.coding![0].code,
-      },
-    ],
+    parameter: [],
   });
 }

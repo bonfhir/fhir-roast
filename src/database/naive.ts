@@ -48,6 +48,10 @@ export class NaiveDatabase extends TerminologyDatabase {
       .filter(Boolean)[0];
   }
 
+  subsumes(params: unknown): unknown {
+    throw new Error("Method not implemented.");
+  }
+
   register(terminology: Terminology): void {
     // batch import
     const records = terminology.import();

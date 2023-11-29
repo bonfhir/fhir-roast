@@ -5,6 +5,8 @@ import { Terminology } from "../terminology/terminology";
 export abstract class TerminologyDatabase {
   abstract read(): CodeableConcept | undefined;
   abstract search(): CodeableConcept | CodeableConcept[] | undefined;
+  // TODO: subsumes
+  abstract subsumes(params: unknown): unknown | undefined;
   abstract lookup(coding: Partial<Coding>): CodeableConcept | undefined;
 
   // terminologies
