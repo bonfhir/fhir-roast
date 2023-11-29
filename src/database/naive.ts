@@ -1,12 +1,11 @@
-import { importSNOMEDRecords } from "./snomed/import";
 import { CodeableConcept, Coding } from "@bonfhir/core/r5";
 import { TerminologyDatabase } from "./terminology-database";
 import { finder } from "./snomed/finder";
 import { TerminologyRecord } from "./terminology-record";
+import { Terminology } from "../terminology/terminology";
 
-export class NaiveDatabase implements TerminologyDatabase {
+export class NaiveDatabase extends TerminologyDatabase {
   private static instance: TerminologyDatabase;
-  private records: TerminologyRecord[] = [];
 
   public static getDatabase(): TerminologyDatabase {
     if (!NaiveDatabase.instance) {
@@ -16,11 +15,20 @@ export class NaiveDatabase implements TerminologyDatabase {
     return NaiveDatabase.instance;
   }
 
+  public static preload() {
+    this.getDatabase();
+  }
+
+  static lookup(coding: Partial<Coding>): CodeableConcept | undefined {
+    const database = this.getDatabase();
+    return database.lookup(coding);
+  }
+
+  private records: TerminologyRecord[];
+
   private constructor() {
-    this.records = importSNOMEDRecords(
-      "./data/SNOMED/sct2_Description_Full-en_US1000124_20230301.txt"
-    );
-    console.log(`Loaded ${this.records.length} records`);
+    super();
+    this.records = [];
   }
 
   read(): CodeableConcept {
@@ -30,16 +38,19 @@ export class NaiveDatabase implements TerminologyDatabase {
     throw new Error("Method not implemented.");
   }
 
-  lookup(coding: Partial<Coding>): CodeableConcept {
+  lookup(coding: Partial<Coding>): CodeableConcept | undefined {
     return finder(this.records, coding);
   }
 
-  public static preload() {
-    this.getDatabase();
-  }
-
-  static lookup(coding: Partial<Coding>): CodeableConcept {
-    const database = this.getDatabase();
-    return database.lookup(coding);
+  register(terminology: Terminology): void {
+    // batch import
+    const records = terminology.import();
+    for (let i = 0; i < records.length; i += 10000) {
+      const slice = records.slice(i, i + 10000);
+      this.records.push(...slice);
+    }
+    console.log(
+      `Imported ${this.records.length} records from ${terminology.name}`
+    );
   }
 }
