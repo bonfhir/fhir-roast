@@ -1,5 +1,4 @@
 import { ILogObj, Logger } from "tslog";
-
 import { Router } from "./router";
 import { NaiveDatabase } from "../database";
 import { Terminology } from "../terminology/terminology";
@@ -10,19 +9,23 @@ const log = new Logger<ILogObj>({
 });
 
 export class Server {
-  router: Router;
-  database: TerminologyDatabase;
+  private router: Router;
+  private database: TerminologyDatabase;
 
   constructor() {
-    this.router = new Router(log);
     this.database = NaiveDatabase.getDatabase();
+    this.router = new Router(this, log);
+  }
+
+  getDatabase() {
+    return this.database;
   }
 
   start() {
     const server = Bun.serve({
       port: 3000,
-      fetch: this.router.routes,
-      error: this.router.error,
+      fetch: (req) => this.router.routes(req),
+      error: (err) => this.router.error(err),
     });
 
     console.log(`Listening on http://localhost:${server.port} ...`);

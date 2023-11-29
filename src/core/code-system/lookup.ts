@@ -4,8 +4,8 @@ import {
   ParametersParameter,
 } from "@bonfhir/core/r5";
 import { Parameters } from "@bonfhir/core/r5";
-import { NaiveDatabase } from "../../database";
 import { parametersReducer } from "../parameters";
+import { TerminologyDatabase } from "../../database/terminology-database";
 
 export interface CodeSystemLookupOperation extends Operation {
   parameters?:
@@ -35,11 +35,11 @@ export type CodeSystemLookupOperationParameters =
   | CodeSystemLookupOperation["parameters"];
 
 export function lookup(
+  database: TerminologyDatabase,
   parameters: CodeSystemLookupOperationParameters
 ): Promise<Parameters | OperationOutcome> {
   const { code, system, version } = parametersReducer(parameters);
-
-  const concept = NaiveDatabase.lookup({ code, system, version });
+  const concept = database.lookup({ code, system, version });
 
   if (!concept) {
     return Promise.resolve({

@@ -4,16 +4,20 @@ import { lookup } from "./code-system/lookup";
 import { ParametersBuilder } from "./parameters-builder";
 import { responder } from "./responder";
 import { ILogObj, Logger } from "tslog";
+import { Server } from "./server";
 
 export type Format = "json" | "xml";
 
 export class Router {
   log: Logger<ILogObj>;
+  server: Server;
 
-  constructor(log: Logger<ILogObj>) {
+  constructor(server: Server, log: Logger<ILogObj>) {
+    this.server = server;
     this.log = log;
   }
 
+  // routes handling
   async routes(req: Request) {
     const url = new URL(req.url);
     const params = url.searchParams;
@@ -32,11 +36,12 @@ export class Router {
         (params.get("_format") ?? "json") as Format
       );
 
-    if (url.pathname === "/CodeSystem/$lookup")
+    if (url.pathname === "/CodeSystem/$lookup") {
       return responder(
-        await lookup(paramsBuilder.getParameters()),
+        await lookup(this.server.getDatabase(), paramsBuilder.getParameters()),
         (params.get("_format") ?? "json") as Format
       );
+    }
 
     if (url.pathname === "/CodeSystem/$validate-code")
       throw new Error("Not implemented");
@@ -56,6 +61,7 @@ export class Router {
     return new Response("404!", { status: 404 });
   }
 
+  // error responses
   error(error: Error) {
     if (error.message === "Not implemented")
       return responder(

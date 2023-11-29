@@ -7,7 +7,7 @@ export class TerminologyManager {
   static load(urls: string[]): Terminology[] {
     console.log(`Loading ${urls.length} terminologies ...`);
     return this.availableTerminologies.filter((terminology) =>
-      urls.includes(terminology.url)
+      terminology.url ? urls.includes(terminology.url) : false
     );
   }
 }

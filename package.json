@@ -3,6 +3,7 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
+    "test": "bun test",
     "build": "bun build index.ts --outdir ./build",
     "dev": "bun run index.ts"
   },
