@@ -1,2 +1,2 @@
-import { NaiveDatabase } from "./naive";
+import { NaiveDatabase } from "./naive-database";
 export { NaiveDatabase };

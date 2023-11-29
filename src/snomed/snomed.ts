@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import { TerminologyRecord } from "../database/terminology-record";
-import { Terminology } from "./terminology";
+import { Terminology } from "../terminology/terminology";
 import { CodeableConcept, Coding } from "@bonfhir/core/r5";
 
 export class SNOMED extends Terminology {
