@@ -32,7 +32,7 @@ COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/index.ts .
 COPY --from=prerelease /usr/src/app/src ./src
 COPY --from=prerelease /usr/src/app/package.json .
-COPY ./data /usr/src/app/data
+COPY --link ./data /usr/src/app/data
 
 # run the app
 USER bun
