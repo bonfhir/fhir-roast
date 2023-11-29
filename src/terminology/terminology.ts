@@ -1,3 +1,4 @@
+import { CodeableConcept, Coding } from "@bonfhir/core/r5";
 import { TerminologyRecord } from "../database/terminology-record";
 
 export abstract class Terminology {
@@ -12,4 +13,8 @@ export abstract class Terminology {
   }
 
   abstract import(): TerminologyRecord[];
+  abstract finder(): (
+    records: TerminologyRecord[],
+    coding: Partial<Coding>
+  ) => CodeableConcept | undefined;
 }

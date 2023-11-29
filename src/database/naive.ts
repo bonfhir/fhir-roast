@@ -1,6 +1,5 @@
 import { CodeableConcept, Coding } from "@bonfhir/core/r5";
 import { TerminologyDatabase } from "./terminology-database";
-import { finder } from "./snomed/finder";
 import { TerminologyRecord } from "./terminology-record";
 import { Terminology } from "../terminology/terminology";
 
@@ -25,10 +24,15 @@ export class NaiveDatabase extends TerminologyDatabase {
   }
 
   private records: TerminologyRecord[];
+  private finders: ((
+    records: TerminologyRecord[],
+    coding: Partial<Coding>
+  ) => CodeableConcept | undefined)[];
 
   private constructor() {
     super();
     this.records = [];
+    this.finders = [];
   }
 
   read(): CodeableConcept {
@@ -39,7 +43,9 @@ export class NaiveDatabase extends TerminologyDatabase {
   }
 
   lookup(coding: Partial<Coding>): CodeableConcept | undefined {
-    return finder(this.records, coding);
+    return this.finders
+      .map((finder) => finder(this.records, coding))
+      .filter(Boolean)[0];
   }
 
   register(terminology: Terminology): void {
@@ -49,6 +55,7 @@ export class NaiveDatabase extends TerminologyDatabase {
       const slice = records.slice(i, i + 10000);
       this.records.push(...slice);
     }
+    this.finders.push(terminology.finder());
     console.log(
       `Imported ${this.records.length} records from ${terminology.name}`
     );
