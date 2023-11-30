@@ -1,8 +1,8 @@
 import { ILogObj, Logger } from "tslog";
 import { Router } from "./router";
-import { NaiveDatabase } from "../database";
 import { Terminology } from "../terminology/terminology";
 import { TerminologyDatabase } from "../database/terminology-database";
+import { SQLiteDatabase } from "../database/sqlite-database";
 
 const log = new Logger<ILogObj>({
   minLevel: process.env.LOG_LEVEL ? parseInt(process.env.LOG_LEVEL) : 3,
@@ -13,7 +13,7 @@ export class Server {
   private database: TerminologyDatabase;
 
   constructor() {
-    this.database = NaiveDatabase.getDatabase();
+    this.database = new SQLiteDatabase();
     this.router = new Router(this, log);
   }
 

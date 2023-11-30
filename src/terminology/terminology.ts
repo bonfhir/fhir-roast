@@ -78,6 +78,8 @@ export abstract class Terminology implements CodeSystem {
     this.status = "active";
   }
 
+  // TODO: this will probably change a lot
+  // TODO: maybe group into an interface
   abstract import(): TerminologyRecord[];
   abstract finder(): (
     records: TerminologyRecord[],

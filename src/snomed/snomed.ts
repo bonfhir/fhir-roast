@@ -3,14 +3,16 @@ import { TerminologyRecord } from "../database/terminology-record";
 import { Terminology } from "../terminology/terminology";
 import { CodeableConcept, Coding } from "@bonfhir/core/r5";
 
+export const SNOMED_CT_URL = "http://snomed.info/sct";
+
 export class SNOMED extends Terminology {
   constructor() {
-    super("SNOMED CT", "2020-03-01", "http://snomed.info/sct");
+    super("SNOMED CT", "2020-03-01", SNOMED_CT_URL);
   }
 
   import(): TerminologyRecord[] {
     console.log("Importing SNOMED ...");
-    return importSNOMEDRecords(
+    return importRecords(
       "./data/SNOMED/sct2_Description_Full-en_US1000124_20230301.txt"
     );
   }
@@ -23,7 +25,7 @@ export class SNOMED extends Terminology {
   }
 }
 
-export function importSNOMEDRecords(filePath: string): TerminologyRecord[] {
+export function importRecords(filePath: string): TerminologyRecord[] {
   const file = readFileSync(filePath, "utf8");
 
   let records: TerminologyRecord[] = [];
@@ -39,7 +41,7 @@ export function importSNOMEDRecords(filePath: string): TerminologyRecord[] {
     const splittedLined = line.split("\t");
     const conceptId = splittedLined[4];
     const term = splittedLined[7];
-    const system = "http://snomed.info/sct";
+    const system = SNOMED_CT_URL;
 
     records.push({ conceptId, term, system });
   }
@@ -53,7 +55,7 @@ export function finder(
 ): CodeableConcept | undefined {
   const { code, system, version } = coding;
   const record = (records ?? []).filter(
-    (record) => record.conceptId === code && system === "http://snomed.info/sct"
+    (record) => record.conceptId === code && system === SNOMED_CT_URL
   )[0];
   if (!record) {
     return undefined;
@@ -61,7 +63,7 @@ export function finder(
   return {
     coding: [
       {
-        system: "http://snomed.info/sct",
+        system: SNOMED_CT_URL,
         code: record.conceptId,
         display: record.term,
         ...(version ? { version } : {}),
