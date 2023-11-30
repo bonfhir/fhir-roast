@@ -1,6 +1,6 @@
 import { Database as BunSQLiteDatabase } from "bun:sqlite";
 import { TerminologyDatabase } from "./terminology-database";
-import { CodeableConcept, Coding } from "@bonfhir/core/r5";
+import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
 import { Terminology } from "../terminology/terminology";
 import { TerminologyRecord } from "./terminology-record";
 
@@ -18,7 +18,9 @@ export class SQLiteDatabase extends TerminologyDatabase {
       this.database.query(query).run();
   }
 
-  read(): CodeableConcept | undefined {
+  read<ReturnType extends Resource>(
+    id: string | undefined
+  ): ReturnType | undefined {
     throw new Error("Method not implemented.");
   }
 

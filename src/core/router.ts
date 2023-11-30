@@ -1,12 +1,14 @@
-import { OperationOutcome } from "@bonfhir/core/r5";
+import { CodeSystem, OperationOutcome } from "@bonfhir/core/r5";
 import { capabilityStatement } from "./capability-statement";
 import { lookup } from "./code-system/lookup";
 import { ParametersBuilder } from "./parameters-builder";
-import { responder } from "./responder";
+import { fhirResponder, reactResponder } from "./responder";
 import { ILogObj, Logger } from "tslog";
 import { Server } from "./server";
-
-export type Format = "json" | "xml";
+import { read } from "./resource/read";
+import { IndexPage } from "../browser";
+import { Format } from "./format";
+import React from "react";
 
 export class Router {
   log: Logger<ILogObj>;
@@ -25,20 +27,27 @@ export class Router {
     const paramsBuilder = new ParametersBuilder(req);
 
     if (url.pathname === "/")
-      return responder(
-        capabilityStatement,
-        (params.get("_format") ?? "json") as Format
-      );
+      return reactResponder(React.createElement(IndexPage), "html");
 
     if (url.pathname === "/CapabilityStatement")
-      return responder(
+      return fhirResponder(
         capabilityStatement,
         (params.get("_format") ?? "json") as Format
       );
 
-    if (url.pathname === "/CodeSystem/$lookup") {
-      return responder(
+    if (url.pathname === "/CodeSystem/$lookup")
+      return fhirResponder(
         await lookup(this.server.getDatabase(), paramsBuilder.getParameters()),
+        (params.get("_format") ?? "json") as Format
+      );
+
+    if (url.pathname === "/CodeSystem/")
+      return new Response("404!", { status: 404 });
+
+    if (url.pathname.includes("/CodeSystem/")) {
+      const { id } = paramsBuilder.getPathParameters();
+      return fhirResponder(
+        await read<CodeSystem>(this.server.getDatabase(), id),
         (params.get("_format") ?? "json") as Format
       );
     }
@@ -64,7 +73,7 @@ export class Router {
   // error responses
   error(error: Error) {
     if (error.message === "Not implemented")
-      return responder(
+      return fhirResponder(
         <OperationOutcome>{
           resourceType: "OperationOutcome",
           issue: [

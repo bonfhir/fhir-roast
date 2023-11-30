@@ -40,6 +40,12 @@ export class ParametersBuilder {
     return bodyString;
   }
 
+  getPathParameters(): { id: string } {
+    return {
+      id: this.url.pathname.split("/")[2],
+    };
+  }
+
   // TODO: handle POST body
   getParameters(): Parameters {
     const parameters: ParametersParameter[] = [];

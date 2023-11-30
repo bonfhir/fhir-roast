@@ -1,4 +1,4 @@
-import { CodeableConcept, Coding } from "@bonfhir/core/r5";
+import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
 import { TerminologyDatabase } from "./terminology-database";
 import { TerminologyRecord } from "./terminology-record";
 import { Terminology } from "../terminology/terminology";
@@ -11,9 +11,12 @@ export class NaiveDatabase extends TerminologyDatabase {
     this.records = [];
   }
 
-  read(): CodeableConcept {
+  read<ReturnType extends Resource>(
+    id: string | undefined
+  ): ReturnType | undefined {
     throw new Error("Method not implemented.");
   }
+
   search(): CodeableConcept[] {
     throw new Error("Method not implemented.");
   }

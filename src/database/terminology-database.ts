@@ -1,10 +1,12 @@
-import { CodeableConcept, Coding } from "@bonfhir/core/r5";
+import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
 import { Terminology } from "../terminology/terminology";
 import { TerminologyRecord } from "./terminology-record";
 
 // abstract high-level representation of a terminology database
 export abstract class TerminologyDatabase {
-  abstract read(): CodeableConcept | undefined;
+  abstract read<ReturnType extends Resource>(
+    id: string | undefined
+  ): ReturnType | undefined;
   abstract search(): CodeableConcept | CodeableConcept[] | undefined;
   // TODO: subsumes
   abstract subsumes(params: unknown): unknown | undefined;

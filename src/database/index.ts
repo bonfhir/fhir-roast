@@ -1,2 +1,10 @@
 import { NaiveDatabase } from "./naive-database";
-export { NaiveDatabase };
+import { SQLiteDatabase } from "./sqlite-database";
+import { TerminologyDatabase } from "./terminology-database";
+import { TerminologyRecord } from "./terminology-record";
+export {
+  NaiveDatabase,
+  SQLiteDatabase,
+  TerminologyDatabase,
+  TerminologyRecord,
+};
