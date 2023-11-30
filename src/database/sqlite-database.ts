@@ -10,16 +10,12 @@ export class SQLiteDatabase extends TerminologyDatabase {
   constructor() {
     super();
     this.database = new BunSQLiteDatabase(":memory:");
-    const query = this.database.query(
-      "create table terminology_records( conceptId text, term text, system text)"
-    );
-    query.run();
-    // query.run(
-    //   "create index terminology_records_code_index on terminology_records(code)"
-    // );
-    // query.run(
-    //   "create index terminology_records_system_index on terminology_records(system)"
-    // );
+    for (const query of [
+      "create table terminology_records( conceptId text, term text, system text)",
+      "create index terminology_records_conceptId_index on terminology_records(conceptId)",
+      "create index terminology_records_system_index on terminology_records(system)",
+    ])
+      this.database.query(query).run();
   }
 
   read(): CodeableConcept | undefined {
