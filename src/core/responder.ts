@@ -1,7 +1,7 @@
 import { Resource } from "@bonfhir/core/r5";
 import { renderer } from "./renderer";
 import { Format } from "./format";
-import { renderToString } from "react-dom/server";
+import { renderToReadableStream } from "react-dom/server";
 
 export type Responder = ReactResponder | FHIRResponder;
 
@@ -15,12 +15,12 @@ export type FHIRResponder = (
   format: Format
 ) => Response;
 
-export function reactResponder(
+export async function reactResponder(
   payload: React.ReactElement | undefined,
   format: Format
 ) {
   if (!payload) return new Response(undefined, { status: 204 });
-  return new Response(renderToString(payload), {
+  return new Response(await renderToReadableStream(payload), {
     status: 200,
     headers: {
       "Content-Type": "text/html",
