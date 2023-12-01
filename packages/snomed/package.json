@@ -1,5 +1,5 @@
 {
-  "name": "fhir-roast-snomed",
+  "name": "@fhir-roast/snomed",
   "module": "index.ts",
   "type": "module",
   "scripts": {
@@ -16,6 +16,6 @@
   "dependencies": {
     "@bonfhir/core": "^2.16.1",
     "tslog": "^4.9.2",
-    "fhir-roast-terminology": "workspace:*"
+    "@fhir-roast/terminology": "workspace:*"
   }
 }

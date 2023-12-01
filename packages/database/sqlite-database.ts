@@ -1,7 +1,7 @@
 import { Database as BunSQLiteDatabase } from "bun:sqlite";
-import { TerminologyDatabase } from "./terminology-database";
 import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
-import { Terminology } from "../terminology/terminology";
+import { Terminology } from "@fhir-roast/terminology";
+import { TerminologyDatabase } from "./terminology-database";
 import { TerminologyRecord } from "./terminology-record";
 
 export class SQLiteDatabase extends TerminologyDatabase {

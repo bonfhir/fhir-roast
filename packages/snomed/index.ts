@@ -1,4 +1,4 @@
-import { TerminologyManager } from "fhir-roast-terminology/terminology-manager";
+import { TerminologyManager } from "@fhir-roast/terminology";
 import { SNOMED } from "./snomed";
 export { SNOMED };
 

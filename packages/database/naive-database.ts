@@ -1,7 +1,7 @@
 import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
+import { Terminology } from "@fhir-roast/terminology";
 import { TerminologyDatabase } from "./terminology-database";
 import { TerminologyRecord } from "./terminology-record";
-import { Terminology } from "../terminology/terminology";
 
 export class NaiveDatabase extends TerminologyDatabase {
   private records: TerminologyRecord[];

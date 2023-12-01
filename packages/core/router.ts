@@ -6,7 +6,7 @@ import { fhirResponder, reactResponder } from "./responder";
 import { ILogObj, Logger } from "tslog";
 import { Server } from "./server";
 import { read } from "./resource/read";
-import { IndexPage } from "../browser";
+import { IndexPage } from "@fhir-roast/browser";
 import { Format } from "./format";
 import React from "react";
 

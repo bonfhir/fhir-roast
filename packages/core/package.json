@@ -1,5 +1,5 @@
 {
-  "name": "fhir-roast-core",
+  "name": "@fhir-roast/core",
   "module": "index.ts",
   "type": "module",
   "scripts": {

@@ -6,7 +6,7 @@ import {
 } from "@bonfhir/core/r5";
 import { Parameters } from "@bonfhir/core/r5";
 import { lookupParametersReducer } from "../parameters";
-import { TerminologyDatabase } from "../../database/terminology-database";
+import { TerminologyDatabase } from "@fhir-roast/database";
 
 export interface CodeSystemLookupOperation extends Operation {
   parameters?:

@@ -1,5 +1,5 @@
 {
-  "name": "fhir-roast-browser",
+  "name": "@fhir-roast/browser",
   "module": "index.ts",
   "type": "module",
   "scripts": {

@@ -1,5 +1,5 @@
 {
-  "name": "fhir-roast-terminology",
+  "name": "@fhir-roast/terminology",
   "module": "index.ts",
   "type": "module",
   "scripts": {
@@ -16,6 +16,6 @@
   "dependencies": {
     "@bonfhir/core": "^2.16.1",
     "tslog": "^4.9.2",
-    "fhir-roast-database": "workspace:*"
+    "@fhir-roast/database": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
-import { Terminology } from "../terminology/terminology";
+import { Terminology } from "@fhir-roast/terminology";
 import { TerminologyRecord } from "./terminology-record";
 
 // abstract high-level representation of a terminology database

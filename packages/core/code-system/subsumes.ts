@@ -4,7 +4,7 @@ import {
   Parameters,
   ParametersParameter,
 } from "@bonfhir/core/r5";
-import { TerminologyDatabase } from "../../database/terminology-database";
+import { TerminologyDatabase } from "@fhir-roast/database";
 import { subsumesParametersReducer } from "../parameters";
 
 export interface CodeSystemSubsumesOperation extends Operation {

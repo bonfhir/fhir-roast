@@ -1,5 +1,5 @@
 import { Resource } from "@bonfhir/core/r5";
-import { TerminologyDatabase } from "../../database/terminology-database";
+import { TerminologyDatabase } from "@fhir-roast/database";
 
 export function read<ReturnType extends Resource>(
   database: TerminologyDatabase,

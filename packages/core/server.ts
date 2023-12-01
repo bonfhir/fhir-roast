@@ -1,8 +1,7 @@
 import { ILogObj, Logger } from "tslog";
 import { Router } from "./router";
-import { Terminology } from "../terminology/terminology";
-import { TerminologyDatabase } from "../database/terminology-database";
-import { SQLiteDatabase } from "../database/sqlite-database";
+import { Terminology } from "@fhir-roast/terminology";
+import { TerminologyDatabase, SQLiteDatabase } from "@fhir-roast/database";
 
 const log = new Logger<ILogObj>({
   minLevel: process.env.LOG_LEVEL ? parseInt(process.env.LOG_LEVEL) : 3,

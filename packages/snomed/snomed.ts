@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
-import { TerminologyRecord } from "../database/terminology-record";
-import { Terminology } from "../terminology/terminology";
 import { CodeableConcept, Coding } from "@bonfhir/core/r5";
+import { TerminologyRecord } from "@fhir-roast/database";
+import { Terminology } from "@fhir-roast/terminology";
 
 export const SNOMED_CT_URL = "http://snomed.info/sct";
 
