@@ -1,5 +1,5 @@
 {
-  "name": "fhir-roast",
+  "name": "fhir-roast-database",
   "module": "index.ts",
   "type": "module",
   "scripts": {
@@ -13,8 +13,8 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
-  "dependencies": {},
-  "workspaces": [
-    "packages/*"
-  ]
+  "dependencies": {
+    "@bonfhir/core": "^2.16.1",
+    "tslog": "^4.9.2"
+  }
 }

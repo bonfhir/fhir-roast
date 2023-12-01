@@ -1,9 +1,13 @@
 import { Operation } from "@bonfhir/core/r5";
 
-export interface CodeSystemValidateCodeOperation extends Operation {
+export interface ValueSetValidateCodeOperation extends Operation {
   parameters: {
     resourceType: "Parameters";
     parameter: [
+      {
+        name: "url";
+        valueUri: string;
+      },
       {
         name: "code";
         valueCode: string;
@@ -13,7 +17,7 @@ export interface CodeSystemValidateCodeOperation extends Operation {
         valueUri: string;
       },
       {
-        name: "version";
+        name: "systemVersion";
         valueString: string;
       },
       {
@@ -23,3 +27,5 @@ export interface CodeSystemValidateCodeOperation extends Operation {
     ];
   };
 }
+
+export const validateCode = () => {};

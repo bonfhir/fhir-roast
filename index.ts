@@ -1,8 +1,8 @@
-import { Server } from "./src/core/server";
-import { TerminologyManager } from "./src/terminology/terminology-manager";
+import { Server } from "fhir-roast-core/server";
+import { TerminologyManager } from "fhir-roast-terminology/terminology-manager";
 
 // plugins
-import "./src/snomed";
+import "fhir-roast-snomed";
 
 const terminologies = TerminologyManager.load(["http://snomed.info/sct"]);
 

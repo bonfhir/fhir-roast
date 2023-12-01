@@ -1,5 +1,5 @@
 {
-  "name": "fhir-roast",
+  "name": "fhir-roast-browser",
   "module": "index.ts",
   "type": "module",
   "scripts": {
@@ -8,13 +8,17 @@
     "dev": "bun run index.ts"
   },
   "devDependencies": {
-    "bun-types": "^1.0.14"
+    "bun-types": "^1.0.14",
+    "@types/react": "^18.2.39",
+    "@types/react-dom": "^18.2.17"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
-  "dependencies": {},
-  "workspaces": [
-    "packages/*"
-  ]
+  "dependencies": {
+    "@bonfhir/core": "^2.16.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tslog": "^4.9.2"
+  }
 }

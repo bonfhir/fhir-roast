@@ -1,6 +1,6 @@
 import { Operation } from "@bonfhir/core/r5";
 
-export interface ValueSetValidateCodeOperation extends Operation {
+export interface ConceptMapTranslateOperation extends Operation {
   parameters: {
     resourceType: "Parameters";
     parameter: [
@@ -9,7 +9,7 @@ export interface ValueSetValidateCodeOperation extends Operation {
         valueUri: string;
       },
       {
-        name: "code";
+        name: "sourceCode";
         valueCode: string;
       },
       {
@@ -17,13 +17,15 @@ export interface ValueSetValidateCodeOperation extends Operation {
         valueUri: string;
       },
       {
-        name: "systemVersion";
-        valueString: string;
+        name: "targetCode";
+        valueCode: string;
       },
       {
-        name: "display";
-        valueString: string;
+        name: "targetSystem";
+        valueUri: string;
       }
     ];
   };
 }
+
+export const translate = () => {};

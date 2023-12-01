@@ -1,15 +1,11 @@
 import { Operation } from "@bonfhir/core/r5";
 
-export interface ConceptMapTranslateOperation extends Operation {
+export interface CodeSystemValidateCodeOperation extends Operation {
   parameters: {
     resourceType: "Parameters";
     parameter: [
       {
-        name: "url";
-        valueUri: string;
-      },
-      {
-        name: "sourceCode";
+        name: "code";
         valueCode: string;
       },
       {
@@ -17,13 +13,15 @@ export interface ConceptMapTranslateOperation extends Operation {
         valueUri: string;
       },
       {
-        name: "targetCode";
-        valueCode: string;
+        name: "version";
+        valueString: string;
       },
       {
-        name: "targetSystem";
-        valueUri: string;
+        name: "display";
+        valueString: string;
       }
     ];
   };
 }
+
+export const validateCode = () => {};

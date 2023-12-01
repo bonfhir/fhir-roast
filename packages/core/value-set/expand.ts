@@ -23,3 +23,5 @@ export interface ValueSetExpandOperation extends Operation {
     ];
   };
 }
+
+export const expand = () => {};

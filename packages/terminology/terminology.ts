@@ -18,7 +18,7 @@ import {
   Resource,
   UsageContext,
 } from "@bonfhir/core/r5";
-import { TerminologyRecord } from "../database/terminology-record";
+import { TerminologyRecord } from "fhir-roast-database/terminology-record";
 
 export abstract class Terminology implements CodeSystem {
   resourceType: "CodeSystem";

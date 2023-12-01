@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { Server } from "../../src/core/server";
+import { Server } from "./server";
 
 test("start", async () => {
   const server = new Server();
