@@ -4,7 +4,6 @@
   "type": "module",
   "scripts": {
     "test": "bun test",
-    "build": "bun build index.ts --outdir ./build",
     "dev": "bun run index.ts"
   },
   "devDependencies": {
@@ -13,7 +12,9 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
-  "dependencies": { "toml": "^3.0.0" },
+  "dependencies": {
+    "toml": "^3.0.0"
+  },
   "workspaces": [
     "packages/*"
   ]

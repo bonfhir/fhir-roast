@@ -8,11 +8,13 @@ WORKDIR /usr/src/app
 FROM base AS install
 RUN mkdir -p /temp/dev
 COPY package.json bun.lockb /temp/dev/
+COPY packages /temp/dev/packages
 RUN cd /temp/dev && bun install --frozen-lockfile
 
 # install with --production (exclude devDependencies)
 RUN mkdir -p /temp/prod
 COPY package.json bun.lockb /temp/prod/
+COPY packages /temp/prod/packages
 RUN cd /temp/prod && bun install --frozen-lockfile --production
 
 # copy node_modules from temp directory
@@ -24,15 +26,15 @@ COPY . .
 # [optional] tests & build
 ENV NODE_ENV=production
 RUN bun test
-RUN bun run build
 
 # copy production dependencies and source code into final image
 FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/index.ts .
-COPY --from=prerelease /usr/src/app/src ./src
+COPY --from=prerelease /usr/src/app/packages .
 COPY --from=prerelease /usr/src/app/package.json .
 COPY --link ./data /usr/src/app/data
+COPY --link ./config /usr/src/app/config
 
 # run the app
 USER bun
