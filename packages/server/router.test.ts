@@ -1,9 +1,9 @@
 import { expect, test } from "bun:test";
 import { Router } from "./router";
 import { ILogObj, Logger } from "tslog";
-import { Server } from "./server-plugin";
+import { ServerPlugin } from "./server-plugin";
 
-const server = {} as Server;
+const server = {} as ServerPlugin;
 const logger = {} as Logger<ILogObj>;
 
 test("routes", async () => {

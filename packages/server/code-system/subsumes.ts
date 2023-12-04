@@ -4,8 +4,8 @@ import {
   Parameters,
   ParametersParameter,
 } from "@bonfhir/core/r5";
-import { TerminologyDatabase } from "@fhir-roast/database";
 import { subsumesParametersReducer } from "../parameters";
+import { DatabaseInterface } from "../database-interface";
 
 export interface CodeSystemSubsumesOperation extends Operation {
   parameters?:
@@ -39,13 +39,21 @@ export type CodeSystemSubsumesOperationParameters =
   | CodeSystemSubsumesOperation["parameters"];
 
 export function subsumes(
-  database: TerminologyDatabase,
+  database: DatabaseInterface | undefined,
   parameters: CodeSystemSubsumesOperationParameters
 ): Promise<Parameters | OperationOutcome> {
+  if (!database) {
+    throw new Error("Database not found");
+  }
   // TODO: Implement subsumes
   const { codeA, codeB, system, version } =
     subsumesParametersReducer(parameters);
-  const concept = database.subsumes({ codeA, codeB, system, version });
+  const concept = database.subsumes({
+    codeA,
+    codeB,
+    system,
+    version,
+  });
 
   if (!concept) {
     // TODO

@@ -4,7 +4,7 @@ import { lookup } from "./code-system/lookup";
 import { ParametersBuilder } from "./parameters-builder";
 import { fhirResponder, reactResponder } from "./responder";
 import { ILogObj, Logger } from "tslog";
-import { Server } from "./server-plugin";
+import { ServerPlugin } from "./server-plugin";
 import { read } from "./resource/read";
 import { IndexPage } from "@fhir-roast/browser";
 import { Format } from "./format";
@@ -12,9 +12,9 @@ import React from "react";
 
 export class Router {
   log: Logger<ILogObj>;
-  server: Server;
+  server: ServerPlugin;
 
-  constructor(server: Server, log: Logger<ILogObj>) {
+  constructor(server: ServerPlugin, log: Logger<ILogObj>) {
     this.server = server;
     this.log = log;
   }

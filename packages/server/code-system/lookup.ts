@@ -1,12 +1,12 @@
 import {
-  Coding,
+  CodeableConcept,
   Operation,
   OperationOutcome,
+  Parameters,
   ParametersParameter,
 } from "@bonfhir/core/r5";
-import { Parameters } from "@bonfhir/core/r5";
 import { lookupParametersReducer } from "../parameters";
-import { TerminologyDatabase } from "@fhir-roast/database";
+import { DatabaseInterface } from "../database-interface";
 
 export interface CodeSystemLookupOperation extends Operation {
   parameters?:
@@ -36,11 +36,19 @@ export type CodeSystemLookupOperationParameters =
   | CodeSystemLookupOperation["parameters"];
 
 export function lookup(
-  database: TerminologyDatabase,
+  database: DatabaseInterface | undefined,
   parameters: CodeSystemLookupOperationParameters
 ): Promise<Parameters | OperationOutcome> {
+  if (!database) {
+    throw new Error("Database not found");
+  }
+
   const { code, system, version } = lookupParametersReducer(parameters);
-  const concept = database.lookup({ code, system, version });
+  const concept: CodeableConcept | undefined = database.lookup({
+    code,
+    system,
+    version,
+  });
 
   if (!concept) {
     return Promise.resolve({
