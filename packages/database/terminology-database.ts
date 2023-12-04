@@ -1,15 +1,15 @@
 import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
 import { Terminology } from "@fhir-roast/terminology";
 import { TerminologyRecord } from "./terminology-record";
+import { DatabaseInterface, ReadArgs, SubsumesArgs } from "@fhir-roast/core";
 
 // abstract high-level representation of a terminology database
-export abstract class TerminologyDatabase {
+export abstract class TerminologyDatabase implements DatabaseInterface {
   abstract read<ReturnType extends Resource>(
-    id: string | undefined
+    args: ReadArgs
   ): ReturnType | undefined;
   abstract search(): CodeableConcept | CodeableConcept[] | undefined;
-  // TODO: subsumes
-  abstract subsumes(params: unknown): unknown | undefined;
+  abstract subsumes(args: Partial<SubsumesArgs>): CodeableConcept | undefined;
   abstract lookup(coding: Partial<Coding>): CodeableConcept | undefined;
 
   protected finders: ((

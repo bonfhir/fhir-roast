@@ -5,7 +5,7 @@ import {
   ParametersParameter,
 } from "@bonfhir/core/r5";
 import { subsumesParametersReducer } from "../parameters";
-import { DatabaseInterface } from "../database-interface";
+import { type DatabaseInterface } from "@fhir-roast/core";
 
 export interface CodeSystemSubsumesOperation extends Operation {
   parameters?:

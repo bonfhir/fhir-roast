@@ -2,6 +2,7 @@ import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
 import { Terminology } from "@fhir-roast/terminology";
 import { TerminologyDatabase } from "./terminology-database";
 import { TerminologyRecord } from "./terminology-record";
+import { ReadArgs, SubsumesArgs } from "@fhir-roast/core";
 
 export class NaiveDatabase extends TerminologyDatabase {
   private records: TerminologyRecord[];
@@ -14,9 +15,7 @@ export class NaiveDatabase extends TerminologyDatabase {
   async start() {}
   async stop() {}
 
-  read<ReturnType extends Resource>(
-    id: string | undefined
-  ): ReturnType | undefined {
+  read<ReturnType extends Resource>(args: ReadArgs): ReturnType | undefined {
     throw new Error("Method not implemented.");
   }
 
@@ -30,7 +29,7 @@ export class NaiveDatabase extends TerminologyDatabase {
       .filter(Boolean)[0];
   }
 
-  subsumes(params: unknown): unknown {
+  subsumes(args: Partial<SubsumesArgs>): CodeableConcept | undefined {
     throw new Error("Method not implemented.");
   }
 

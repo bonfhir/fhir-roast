@@ -1,5 +1,5 @@
 import { Resource } from "@bonfhir/core/r5";
-import { DatabaseInterface } from "../database-interface";
+import { type DatabaseInterface } from "@fhir-roast/core";
 
 export function read<ReturnType extends Resource>(
   database: DatabaseInterface | undefined,

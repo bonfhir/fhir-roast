@@ -1,9 +1,8 @@
-import { App, PluginTemplate } from "@fhir-roast/core";
+import { App, PluginTemplate, type DatabaseInterface } from "@fhir-roast/core";
 import { ILogObj, Logger } from "tslog";
 import { Router } from "./router";
 import { Server as BunServer } from "bun";
 import { Configuration } from "./configuration";
-import { DatabaseInterface } from "./database-interface";
 
 const log = new Logger<ILogObj>({
   minLevel: process.env.LOG_LEVEL ? parseInt(process.env.LOG_LEVEL) : 3,

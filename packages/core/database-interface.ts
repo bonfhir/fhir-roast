@@ -1,10 +1,10 @@
-import { CodeableConcept, Coding } from "@bonfhir/core/r5";
+import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
 
-type ReadArgs = {
+export type ReadArgs = {
   id: string;
 };
 
-type SubsumesArgs = {
+export type SubsumesArgs = {
   codeA: string;
   codeB: string;
   system: string;
@@ -12,7 +12,9 @@ type SubsumesArgs = {
 };
 
 export interface DatabaseInterface {
-  read<T>(args: Partial<ReadArgs>): T | undefined;
+  read<ReturnType extends Resource>(
+    args: Partial<ReadArgs>
+  ): ReturnType | undefined;
   lookup: (args: Partial<Coding>) => CodeableConcept | undefined;
   subsumes: (args: Partial<SubsumesArgs>) => CodeableConcept | undefined;
 }
