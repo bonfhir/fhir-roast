@@ -1,6 +1,10 @@
 # FHIR Roast
 
-FHIR Roast is a bare-bones FHIR server written in TypeScript. Is is intended to be used as a building block for applications requiring a FHIR Terminology Server. It's main driving philosophy is to be extensible such as to be easily modified by developers to suit their needs.
+FHIR Roast is a bare-bones FHIR Terminology Service written in TypeScript. Is is intended to be used as a building block for applications requiring a FHIR Terminology Service. It's main driving philosophy is to be extensible such as to be easily modified by developers to suit their needs.
+
+- It should be developed using a plugin architecture and easy to extend.
+- It should be easy to add new terminologies or code systems.
+- It should have fast lookups and be read optimized to be used in data ingestion processes.
 
 ## FHIR
 
