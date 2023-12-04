@@ -18,6 +18,9 @@ export class SQLiteDatabase extends TerminologyDatabase {
       this.database.query(query).run();
   }
 
+  async start() {}
+  async stop() {}
+
   read<ReturnType extends Resource>(
     id: string | undefined
   ): ReturnType | undefined {

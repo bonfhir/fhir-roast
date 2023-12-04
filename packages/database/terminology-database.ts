@@ -21,9 +21,11 @@ export abstract class TerminologyDatabase {
     this.finders = [];
   }
 
-  // terminologies
+  abstract start(): Promise<void>;
+  abstract stop(): Promise<void>;
 
-  register(terminology: Terminology): void {
+  // terminologies
+  async register(terminology: Terminology) {
     // batch import
     this.importedRecords(terminology, terminology.import());
     this.finders.push(terminology.finder());

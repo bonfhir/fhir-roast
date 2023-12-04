@@ -4,7 +4,7 @@ import { lookup } from "./code-system/lookup";
 import { ParametersBuilder } from "./parameters-builder";
 import { fhirResponder, reactResponder } from "./responder";
 import { ILogObj, Logger } from "tslog";
-import { Server } from "./server";
+import { Server } from "./server-plugin";
 import { read } from "./resource/read";
 import { IndexPage } from "@fhir-roast/browser";
 import { Format } from "./format";

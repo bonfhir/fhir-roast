@@ -1,9 +1,10 @@
 {
-  "name": "fhir-roast",
+  "name": "@fhir-roast/server",
   "module": "index.ts",
   "type": "module",
   "scripts": {
     "test": "bun test",
+    "build": "bun build index.ts --outdir ./build",
     "dev": "bun run index.ts"
   },
   "devDependencies": {
@@ -13,10 +14,8 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "toml": "^3.0.0"
-  },
-  "workspaces": [
-    "packages/*",
-    "plugins/*"
-  ]
+    "@bonfhir/core": "^2.16.1",
+    "fast-xml-parser": "^4.3.2",
+    "tslog": "^4.9.2"
+  }
 }

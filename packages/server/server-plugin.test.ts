@@ -1,22 +1,20 @@
 import { expect, test } from "bun:test";
-import { Server } from "./server";
+import { ServerPlugin } from "./server-plugin";
+import { App } from "@fhir-roast/core";
+
+const app = {} as App;
 
 test("start", async () => {
-  const server = new Server();
+  const server = new ServerPlugin(app);
   expect(server.start).toBeDefined();
 });
 
 test("stop", async () => {
-  const server = new Server();
+  const server = new ServerPlugin(app);
   expect(server.stop).toBeDefined();
 });
 
-test("register", async () => {
-  const server = new Server();
-  expect(server.register).toBeDefined();
-});
-
 test("getDatabase", async () => {
-  const server = new Server();
+  const server = new ServerPlugin(app);
   expect(server.getDatabase).toBeDefined();
 });

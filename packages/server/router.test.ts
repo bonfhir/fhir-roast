@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
 import { Router } from "./router";
 import { ILogObj, Logger } from "tslog";
-import { Server } from "./server";
+import { Server } from "./server-plugin";
 
 const server = {} as Server;
 const logger = {} as Logger<ILogObj>;

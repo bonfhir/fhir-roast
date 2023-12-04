@@ -11,6 +11,9 @@ export class NaiveDatabase extends TerminologyDatabase {
     this.records = [];
   }
 
+  async start() {}
+  async stop() {}
+
   read<ReturnType extends Resource>(
     id: string | undefined
   ): ReturnType | undefined {

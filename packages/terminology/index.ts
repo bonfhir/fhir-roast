@@ -1,3 +1,4 @@
 import { Terminology } from "./terminology";
 import { TerminologyManager } from "./terminology-manager";
-export { Terminology, TerminologyManager };
+import { TerminologyPlugin } from "./terminology-plugin";
+export { Terminology, TerminologyManager, TerminologyPlugin };
