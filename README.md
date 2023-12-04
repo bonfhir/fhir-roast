@@ -25,3 +25,26 @@ bun run index.ts
 ```
 
 This project was created using `bun init` in bun v1.0.14. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+
+## Installing Terminologies
+
+### SNOMED CT
+
+You can acquire a copy of the SNOMED CT US Edition or International Edition from the National Library of Medicine:
+
+- https://www.nlm.nih.gov/healthit/snomedct/us_edition.html
+- https://www.nlm.nih.gov/healthit/snomedct/international.html
+
+Extract the content of the archive into the `data/SNOMED` directory.
+
+Ensure the entry point script registers the SNOMED CT terminology:
+
+```typescript
+...
+import "@fhir-roast/snomed";
+...
+const terminologies = TerminologyManager.load(["http://snomed.info/sct"]);
+...
+server.register(terminologies);
+...
+```
