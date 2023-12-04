@@ -13,7 +13,7 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
-  "dependencies": {},
+  "dependencies": { "toml": "^3.0.0" },
   "workspaces": [
     "packages/*"
   ]
