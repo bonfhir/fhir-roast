@@ -17,9 +17,20 @@ export type SubsumesArgs = {
   version: string;
 };
 
+export type SearchArgs = {
+  url: string;
+  version: string;
+  name: string;
+  title: string;
+  status: string;
+};
+
 export interface DatabaseInterface {
   read<ReturnType extends Resource>(
     args: Partial<ReadArgs>
+  ): ReturnType | undefined;
+  search<ReturnType extends Resource>(
+    args: Partial<SearchArgs>
   ): ReturnType | undefined;
   lookup: (args: Partial<Coding>) => CodeableConcept | undefined;
   validateCode: (

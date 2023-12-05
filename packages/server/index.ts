@@ -5,10 +5,10 @@ import {
   validateCode as codeSystemValidateCode,
 } from "./code-system";
 import { translate } from "./concept-map";
-import { read } from "./resource";
+import { read, search } from "./resource";
 import { expand, validateCode as valueSetValidateCode } from "./value-set";
 import { capabilityStatement } from "./capability-statement";
-import { ParametersBuilder } from "./parameters-builder";
+import { ParametersBuilder } from "./parameters/parameters-builder";
 import { Router } from "./router";
 export {
   capabilityStatement,
@@ -20,6 +20,7 @@ export {
   codeSystemValidateCode,
   translate,
   read,
+  search,
   expand,
   valueSetValidateCode,
 };

@@ -1,2 +1,3 @@
 import { read } from "./read";
-export { read };
+import { search } from "./search";
+export { read, search };

@@ -3,7 +3,7 @@ import { capabilityStatement } from "./capability-statement";
 import { lookup } from "./code-system/lookup";
 import { validateCode } from "./code-system/validate-code";
 import { subsumes } from "./code-system/subsumes";
-import { ParametersBuilder } from "./parameters-builder";
+import { ParametersBuilder } from "./parameters";
 import { fhirResponder, reactResponder } from "./responder";
 import { ILogObj, Logger } from "tslog";
 import { ServerPlugin } from "./server-plugin";
