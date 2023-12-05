@@ -1,2 +1,3 @@
 import { SNOMED } from "./snomed";
-export { SNOMED };
+import { SNOMEDPlugin } from "./snomed-plugin";
+export { SNOMED, SNOMEDPlugin };

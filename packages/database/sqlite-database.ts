@@ -100,4 +100,14 @@ export class SQLiteDatabase extends TerminologyDatabase {
 
     batch(records);
   }
+
+  protected removeRecords(terminology: Terminology): void {
+    if (!terminology.url) {
+      return;
+    }
+    const query = this.database.prepare(
+      "delete from terminology_records where system = $system"
+    );
+    query.run(terminology.url);
+  }
 }

@@ -18,7 +18,7 @@ import {
   Resource,
   UsageContext,
 } from "@bonfhir/core/r5";
-import { TerminologyRecord } from "@fhir-roast/database";
+import { TerminologyRecordInterface } from "@fhir-roast/core";
 
 export abstract class Terminology implements CodeSystem {
   resourceType: "CodeSystem";
@@ -79,10 +79,10 @@ export abstract class Terminology implements CodeSystem {
   }
 
   // TODO: this will probably change a lot
-  // TODO: maybe group into an interface
-  abstract import(): TerminologyRecord[];
+  // TODO: maybe group these methods into an interface
+  abstract import(): TerminologyRecordInterface[];
   abstract finder(): (
-    records: TerminologyRecord[],
+    records: TerminologyRecordInterface[],
     coding: Partial<Coding>
   ) => CodeableConcept | undefined;
 }

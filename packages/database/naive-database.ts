@@ -45,4 +45,10 @@ export class NaiveDatabase extends TerminologyDatabase {
       `Imported ${this.records.length} records from ${terminology.name}`
     );
   }
+
+  protected removeRecords(terminology: Terminology): void {
+    this.records = this.records.filter(
+      (record) => record.system !== terminology.url
+    );
+  }
 }

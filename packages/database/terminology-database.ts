@@ -31,8 +31,18 @@ export abstract class TerminologyDatabase implements DatabaseInterface {
     this.finders.push(terminology.finder());
   }
 
+  async unregister(terminology: Terminology) {
+    // batch remove
+    this.removeRecords(terminology);
+    this.finders = this.finders.filter(
+      (finder) => finder !== terminology.finder()
+    );
+  }
+
   protected abstract importedRecords(
     terminology: Terminology,
     records: TerminologyRecord[]
   ): void;
+
+  protected abstract removeRecords(terminology: Terminology): void;
 }

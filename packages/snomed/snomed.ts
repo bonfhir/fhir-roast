@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import { CodeableConcept, Coding } from "@bonfhir/core/r5";
-import { TerminologyRecord } from "@fhir-roast/database";
+import { TerminologyRecordInterface } from "@fhir-roast/core";
 import { Terminology } from "@fhir-roast/terminology";
 
 export const SNOMED_CT_URL = "http://snomed.info/sct";
@@ -10,7 +10,7 @@ export class SNOMED extends Terminology {
     super("SNOMED CT", "2020-03-01", SNOMED_CT_URL);
   }
 
-  import(): TerminologyRecord[] {
+  import(): TerminologyRecordInterface[] {
     console.log("Importing SNOMED ...");
     return importRecords(
       "./data/SNOMED/sct2_Description_Full-en_US1000124_20230301.txt"
@@ -18,17 +18,17 @@ export class SNOMED extends Terminology {
   }
 
   finder(): (
-    records: TerminologyRecord[],
+    records: TerminologyRecordInterface[],
     coding: Partial<Coding>
   ) => CodeableConcept | undefined {
     return finder;
   }
 }
 
-export function importRecords(filePath: string): TerminologyRecord[] {
+export function importRecords(filePath: string): TerminologyRecordInterface[] {
   const file = readFileSync(filePath, "utf8");
 
-  let records: TerminologyRecord[] = [];
+  let records: TerminologyRecordInterface[] = [];
   let lineNumber = 0;
 
   for (const line of file.split("\n")) {
@@ -50,7 +50,7 @@ export function importRecords(filePath: string): TerminologyRecord[] {
 }
 
 export function finder(
-  records: TerminologyRecord[],
+  records: TerminologyRecordInterface[],
   coding: Partial<Coding>
 ): CodeableConcept | undefined {
   const { code, system, version } = coding;
