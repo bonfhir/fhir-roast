@@ -1,4 +1,9 @@
-import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
+import {
+  CodeSystem,
+  CodeableConcept,
+  Coding,
+  Resource,
+} from "@bonfhir/core/r5";
 import { Terminology } from "@fhir-roast/terminology";
 import { TerminologyDatabase } from "./terminology-database";
 import { TerminologyRecord } from "./terminology-record";
@@ -33,7 +38,7 @@ export class NaiveDatabase extends TerminologyDatabase {
     throw new Error("Method not implemented.");
   }
 
-  importedRecords(
+  protected importedRecords(
     terminology: Terminology,
     records: TerminologyRecord[]
   ): void {

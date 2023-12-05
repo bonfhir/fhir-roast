@@ -1,6 +1,8 @@
 import { CodeSystem, OperationOutcome } from "@bonfhir/core/r5";
 import { capabilityStatement } from "./capability-statement";
 import { lookup } from "./code-system/lookup";
+import { validateCode } from "./code-system/validate-code";
+import { subsumes } from "./code-system/subsumes";
 import { ParametersBuilder } from "./parameters-builder";
 import { fhirResponder, reactResponder } from "./responder";
 import { ILogObj, Logger } from "tslog";
@@ -23,7 +25,6 @@ export class Router {
   async routes(req: Request) {
     const url = new URL(req.url);
     const params = url.searchParams;
-
     const paramsBuilder = new ParametersBuilder(req);
 
     if (url.pathname === "/")
@@ -41,6 +42,24 @@ export class Router {
         (params.get("_format") ?? "json") as Format
       );
 
+    if (url.pathname === "/CodeSystem/$validate-code")
+      return fhirResponder(
+        await validateCode(
+          this.server.getDatabase(),
+          paramsBuilder.getParameters()
+        ),
+        (params.get("_format") ?? "json") as Format
+      );
+
+    if (url.pathname === "/CodeSystem/$subsumes")
+      return fhirResponder(
+        await subsumes(
+          this.server.getDatabase(),
+          paramsBuilder.getParameters()
+        ),
+        (params.get("_format") ?? "json") as Format
+      );
+
     if (url.pathname === "/CodeSystem/")
       return new Response("404!", { status: 404 });
 
@@ -51,12 +70,6 @@ export class Router {
         (params.get("_format") ?? "json") as Format
       );
     }
-
-    if (url.pathname === "/CodeSystem/$validate-code")
-      throw new Error("Not implemented");
-
-    if (url.pathname === "/CodeSystem/$subsumes")
-      throw new Error("Not implemented");
 
     if (url.pathname === "/ValueSet/$expand")
       throw new Error("Not implemented");

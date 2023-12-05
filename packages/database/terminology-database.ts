@@ -1,4 +1,9 @@
-import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
+import {
+  CodeSystem,
+  CodeableConcept,
+  Coding,
+  Resource,
+} from "@bonfhir/core/r5";
 import { Terminology } from "@fhir-roast/terminology";
 import { TerminologyRecord } from "./terminology-record";
 import { DatabaseInterface, ReadArgs, SubsumesArgs } from "@fhir-roast/core";
@@ -10,7 +15,40 @@ export abstract class TerminologyDatabase implements DatabaseInterface {
   ): ReturnType | undefined;
   abstract search(): CodeableConcept | CodeableConcept[] | undefined;
   abstract subsumes(args: Partial<SubsumesArgs>): CodeableConcept | undefined;
-  abstract lookup(coding: Partial<Coding>): CodeableConcept | undefined;
+  abstract lookup(args: Partial<Coding>): CodeableConcept | undefined;
+
+  validateCode(
+    args: Partial<Coding | CodeableConcept | CodeSystem>
+  ): CodeableConcept | undefined {
+    let resourceType: string | undefined, coding: Coding;
+    if ("resourceType" in args) {
+      resourceType = args.resourceType;
+    } else {
+      resourceType = "Coding";
+    }
+
+    switch (resourceType) {
+      case "CodeableConcept":
+        const codeableConcept = args as CodeableConcept;
+        coding = {
+          system: codeableConcept.coding?.[0].system,
+          code: codeableConcept.coding?.[0].code,
+        };
+        return this.lookup(coding);
+      case "CodeSystem":
+        const codeSystem = args as CodeSystem;
+        coding = {
+          system: codeSystem.url,
+          code: codeSystem.concept?.[0].code,
+        };
+        return this.lookup(coding);
+      case "Coding":
+        coding = args as Coding;
+        return this.lookup(coding);
+      default:
+        return undefined;
+    }
+  }
 
   protected finders: ((
     records: TerminologyRecord[],

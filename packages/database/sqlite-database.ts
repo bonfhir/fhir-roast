@@ -1,5 +1,10 @@
 import { Database as BunSQLiteDatabase } from "bun:sqlite";
-import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
+import {
+  CodeSystem,
+  CodeableConcept,
+  Coding,
+  Resource,
+} from "@bonfhir/core/r5";
 import { Terminology } from "@fhir-roast/terminology";
 import { TerminologyDatabase } from "./terminology-database";
 import { TerminologyRecord } from "./terminology-record";

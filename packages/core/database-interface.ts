@@ -1,4 +1,9 @@
-import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
+import {
+  CodeSystem,
+  CodeableConcept,
+  Coding,
+  Resource,
+} from "@bonfhir/core/r5";
 import { Terminology } from "@fhir-roast/terminology";
 
 export type ReadArgs = {
@@ -17,6 +22,9 @@ export interface DatabaseInterface {
     args: Partial<ReadArgs>
   ): ReturnType | undefined;
   lookup: (args: Partial<Coding>) => CodeableConcept | undefined;
+  validateCode: (
+    args: Partial<Coding | CodeableConcept | CodeSystem>
+  ) => CodeableConcept | undefined;
   subsumes: (args: Partial<SubsumesArgs>) => CodeableConcept | undefined;
 
   register(terminology: Terminology): Promise<void>;

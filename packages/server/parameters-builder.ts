@@ -52,7 +52,7 @@ export class ParametersBuilder {
 
     for (const [key, value] of this.params.entries()) {
       if (key === "_format") continue;
-      if (key === "system") {
+      if (key === "system" || key === "url") {
         parameters.push({
           name: key,
           valueUri: value,
