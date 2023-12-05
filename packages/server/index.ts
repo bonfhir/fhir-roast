@@ -23,3 +23,4 @@ export {
   expand,
   valueSetValidateCode,
 };
+export default ServerPlugin;

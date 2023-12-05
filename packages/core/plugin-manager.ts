@@ -25,9 +25,16 @@ export class PluginManager<T> {
     const files = await readdir(dir, { withFileTypes: true });
     for (const file of files.filter((file) => file.isDirectory())) {
       // current working directory is used to resolve the path to the plugins directory.
-      const Plugin = await import(join(process.cwd(), dir, file.name));
-      const plugin = new Plugin(app);
-      await this.load(plugin as PluginTemplate<T>);
+      if (file.name === "typescript-config") continue;
+      try {
+        const module = await import(join(process.cwd(), dir, file.name));
+        if (module && module.default) {
+          const plugin = new module.default(app);
+          await this.load(plugin as PluginTemplate<T>);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 

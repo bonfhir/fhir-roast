@@ -10,3 +10,4 @@ export {
   TerminologyDatabase,
   type TerminologyRecord,
 };
+export default DatabasePlugin;

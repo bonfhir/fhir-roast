@@ -9,11 +9,12 @@ export class App {
 
   constructor() {}
 
-  start() {
-    this.pluginManager.loadDir(this, "./plugins");
+  async start() {
+    await this.pluginManager.loadDir(this, "./packages");
+    await this.pluginManager.loadDir(this, "./plugins");
   }
 
-  stop() {
+  async stop() {
     this.pluginManager.unloadAll();
   }
 

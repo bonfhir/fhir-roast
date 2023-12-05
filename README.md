@@ -41,14 +41,4 @@ You can acquire a copy of the SNOMED CT US Edition or International Edition from
 
 Extract the content of the archive into the `data/SNOMED` directory.
 
-Ensure the entry point script registers the SNOMED CT terminology:
-
-```typescript
-...
-import "@fhir-roast/snomed";
-...
-const terminologies = TerminologyManager.load(["http://snomed.info/sct"]);
-...
-server.register(terminologies);
-...
-```
+The SNOMED CT terminology will be auto-loaded by the SNOMED plugin.
