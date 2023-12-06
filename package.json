@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "test": "bun test",
+    "build": "bun build packages/browser/hydrate.tsx --outdir ./build",
     "dev": "bun run index.ts"
   },
   "devDependencies": {
