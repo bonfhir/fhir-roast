@@ -14,7 +14,6 @@ export class ServerPlugin extends PluginTemplate<App> {
 
   private server: BunServer | null;
   private router: Router;
-
   private config: Configuration;
 
   constructor(app: App) {
@@ -28,7 +27,7 @@ export class ServerPlugin extends PluginTemplate<App> {
     this.server = Bun.serve({
       hostname: this.config.hostname,
       port: this.config.port,
-      fetch: (req) => this.router.routes(req),
+      fetch: (request, server) => this.router.routes(request, server),
       error: (err) => this.router.error(err),
     });
 

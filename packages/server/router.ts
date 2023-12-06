@@ -8,27 +8,48 @@ import { fhirResponder, reactResponder } from "./responder";
 import { ILogObj, Logger } from "tslog";
 import { ServerPlugin } from "./server-plugin";
 import { read } from "./resource/read";
-import { IndexPage } from "@fhir-roast/browser";
+import { App as ReactApp } from "@fhir-roast/browser";
 import { Format } from "./format";
 import React from "react";
+import { ReactResponder } from "@fhir-roast/browser";
+import { Server as BunServer } from "bun";
 
 export class Router {
   log: Logger<ILogObj>;
   server: ServerPlugin;
+  reactResponder: ReactResponder;
 
   constructor(server: ServerPlugin, log: Logger<ILogObj>) {
     this.server = server;
     this.log = log;
+    this.reactResponder = new ReactResponder();
   }
 
   // routes handling
-  async routes(req: Request) {
+  async routes(req: Request, server: BunServer) {
+    await this.reactResponder.init();
     const url = new URL(req.url);
     const params = url.searchParams;
     const paramsBuilder = new ParametersBuilder(req);
 
+    const buildFileRequest = this.reactResponder.serveBuild(req);
+    if (buildFileRequest) {
+      return buildFileRequest;
+    }
+
+    const demoPageRequest = await this.reactResponder.serveDemoPage(
+      req,
+      server
+    );
+    if (demoPageRequest) {
+      return demoPageRequest;
+    }
+
     if (url.pathname === "/")
-      return reactResponder(React.createElement(IndexPage), "html");
+      return fhirResponder(
+        capabilityStatement,
+        (params.get("_format") ?? "json") as Format
+      );
 
     if (url.pathname === "/CapabilityStatement")
       return fhirResponder(
