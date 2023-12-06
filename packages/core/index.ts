@@ -4,6 +4,7 @@ import {
   ReadArgs,
   SubsumesArgs,
 } from "./database-interface";
+import { ResponderInterface } from "./responder-interface";
 import { TerminologyRecordInterface } from "./terminology-record-interface";
 import { PluginManager } from "./plugin-manager";
 import { PluginTemplate } from "./plugin-template";
@@ -13,6 +14,7 @@ export {
   PluginTemplate,
   type DatabaseInterface,
   type TerminologyRecordInterface,
+  type ResponderInterface,
   type ReadArgs,
   type SubsumesArgs,
 };

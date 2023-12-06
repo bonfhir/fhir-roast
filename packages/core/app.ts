@@ -4,6 +4,10 @@ interface DatabaseInterface<T = any> {
   getDatabase(): T;
 }
 
+interface ResponderInterface<T = any> {
+  getResponder(): T;
+}
+
 export class App {
   pluginManager = new PluginManager<App>();
 
@@ -25,5 +29,13 @@ export class App {
         | DatabaseInterface<T>
         | undefined
     )?.getDatabase();
+  }
+
+  getBrowser<T>(): T | undefined {
+    return (
+      this.pluginManager.getPlugin("browser") as unknown as
+        | ResponderInterface<T>
+        | undefined
+    )?.getResponder();
   }
 }

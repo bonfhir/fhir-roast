@@ -2,14 +2,27 @@ import { renderToReadableStream } from "react-dom/server";
 import { build } from "bun";
 import { Server as BunServer } from "bun";
 import App from "./app";
+import { ResponderInterface } from "@fhir-roast/core";
 
-export class ReactResponder {
+export class BrowserResponder implements ResponderInterface {
   buildsMatchers: Map<string, () => Response>;
   built: boolean;
 
   constructor() {
     this.buildsMatchers = new Map<string, () => Response>();
     this.built = false;
+  }
+
+  async respond(request: Request) {
+    const buildFileRequest = this.serveBuild(request);
+    if (buildFileRequest) {
+      return buildFileRequest;
+    }
+
+    const appRequest = await this.serveApp(request);
+    if (appRequest) {
+      return appRequest;
+    }
   }
 
   async init() {
@@ -50,21 +63,19 @@ export class ReactResponder {
       this.buildsMatchers.set(path, responder);
     }
 
-    console.log(this.buildsMatchers);
     this.built = true;
   }
 
-  serveBuild(req: Request) {
-    const { pathname } = new URL(req.url);
+  serveBuild(request: Request) {
+    const { pathname } = new URL(request.url);
 
     const buildFileRequest = this.buildsMatchers.get(pathname);
-
     if (buildFileRequest) {
       return buildFileRequest();
     }
   }
 
-  async serveDemoPage(req: Request, server: BunServer) {
+  async serveApp(req: Request) {
     const { pathname } = new URL(req.url);
 
     if (pathname === "/" && req.method === "GET") {

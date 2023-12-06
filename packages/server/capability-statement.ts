@@ -2,7 +2,6 @@ import { CapabilityStatement } from "@bonfhir/core/r5";
 import { narrative } from "@bonfhir/core/r5";
 
 // TODO: we'll probably want to keep this updated with respect to the implementation
-
 export const capabilityStatement: CapabilityStatement = {
   resourceType: "CapabilityStatement",
   id: "fhir-roast-terminology-server",

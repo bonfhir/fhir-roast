@@ -4,45 +4,32 @@ import { lookup } from "./code-system/lookup";
 import { validateCode } from "./code-system/validate-code";
 import { subsumes } from "./code-system/subsumes";
 import { ParametersBuilder } from "./parameters";
-import { fhirResponder, reactResponder } from "./responder";
+import { fhirResponder } from "./responder";
 import { ILogObj, Logger } from "tslog";
 import { ServerPlugin } from "./server-plugin";
 import { read } from "./resource/read";
-import { App as ReactApp } from "@fhir-roast/browser";
 import { Format } from "./format";
-import React from "react";
-import { ReactResponder } from "@fhir-roast/browser";
 import { Server as BunServer } from "bun";
 
 export class Router {
   log: Logger<ILogObj>;
   server: ServerPlugin;
-  reactResponder: ReactResponder;
 
   constructor(server: ServerPlugin, log: Logger<ILogObj>) {
     this.server = server;
     this.log = log;
-    this.reactResponder = new ReactResponder();
   }
 
   // routes handling
   async routes(req: Request, server: BunServer) {
-    await this.reactResponder.init();
     const url = new URL(req.url);
     const params = url.searchParams;
     const paramsBuilder = new ParametersBuilder(req);
 
-    const buildFileRequest = this.reactResponder.serveBuild(req);
-    if (buildFileRequest) {
-      return buildFileRequest;
-    }
-
-    const demoPageRequest = await this.reactResponder.serveDemoPage(
-      req,
-      server
-    );
-    if (demoPageRequest) {
-      return demoPageRequest;
+    const browser = this.server.getBrowser();
+    if (browser) {
+      const resp = await browser.respond(req);
+      if (resp) return resp;
     }
 
     if (url.pathname === "/")

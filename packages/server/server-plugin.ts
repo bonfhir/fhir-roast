@@ -1,4 +1,9 @@
-import { App, PluginTemplate, type DatabaseInterface } from "@fhir-roast/core";
+import {
+  App,
+  PluginTemplate,
+  type DatabaseInterface,
+  type ResponderInterface,
+} from "@fhir-roast/core";
 import { ILogObj, Logger } from "tslog";
 import { Router } from "./router";
 import { Server as BunServer } from "bun";
@@ -41,5 +46,9 @@ export class ServerPlugin extends PluginTemplate<App> {
 
   getDatabase<T = DatabaseInterface>(): T | undefined {
     return this.app.getDatabase();
+  }
+
+  getBrowser<T = ResponderInterface>(): T | undefined {
+    return this.app.getBrowser();
   }
 }
