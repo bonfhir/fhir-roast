@@ -1,19 +1,21 @@
 import { Coding } from "@bonfhir/core/r5";
 import styles from "./index.module.css";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 
 const jsonUrl = (coding: Coding) => {
-  return `/CodeSystem/$lookup?system=${coding.system}&code=${coding.code}&format=json`;
+  return `/CodeSystem/$lookup?system=${coding.system}&code=${coding.code}&_format=json`;
 };
 
 const xmlUrl = (coding: Coding) => {
-  return `/CodeSystem/$lookup?system=${coding.system}&code=${coding.code}&format=xml`;
+  return `/CodeSystem/$lookup?system=${coding.system}&code=${coding.code}&_format=xml`;
 };
 
-const SearchForm: FC = () => {
+interface SearchFormProps extends React.FormHTMLAttributes<HTMLFormElement> {}
+
+const SearchForm: FC<SearchFormProps> = (props) => {
   return (
-    <form>
+    <form {...props}>
       <input type="text" placeholder="Query" />
       <input type="submit" value="Search" />
     </form>
@@ -55,11 +57,21 @@ const TableRowCoding: FC<{ coding: Coding }> = ({ coding }) => {
 };
 
 export const IndexPage: FC = () => {
-  const codings: Array<Coding> = [];
+  const [codings, setCodings] = useState<Coding[]>([]);
+  const searchFormHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setCodings([
+      {
+        code: "123",
+        display: "Test",
+        system: "http://test.com",
+      },
+    ]);
+  };
   return (
     <div className={styles.pageContainer}>
       <h1 className="title">FHIR Roast Terminology Service</h1>
-      <SearchForm />
+      <SearchForm onSubmit={searchFormHandler} />
       <TableCoding codings={codings} />
     </div>
   );
