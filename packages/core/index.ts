@@ -1,13 +1,13 @@
-import { App } from "./app";
+import { App } from "./src/app";
 import {
   DatabaseInterface,
   ReadArgs,
   SubsumesArgs,
-} from "./database-interface";
-import { ResponderInterface } from "./responder-interface";
-import { TerminologyRecordInterface } from "./terminology-record-interface";
-import { PluginManager } from "./plugin-manager";
-import { PluginTemplate } from "./plugin-template";
+} from "./src/database-interface";
+import { ResponderInterface } from "./src/responder-interface";
+import { TerminologyRecordInterface } from "./src/terminology-record-interface";
+import { PluginManager } from "./src/plugin-manager";
+import { PluginTemplate } from "./src/plugin-template";
 export {
   App,
   PluginManager,
