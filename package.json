@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "test": "bun test",
-    "build": "bun build packages/browser/hydrate.tsx --outdir ./build",
+    "build": "bun build packages/browser/src/hydrate.tsx --outdir ./build",
     "dev": "bun run index.ts"
   },
   "devDependencies": {
@@ -13,9 +13,7 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
-  "dependencies": {
-    "toml": "^3.0.0"
-  },
+  "dependencies": {},
   "workspaces": [
     "packages/*",
     "plugins/*"

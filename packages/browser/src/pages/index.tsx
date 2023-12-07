@@ -25,15 +25,26 @@ const SearchForm: FC<SearchFormProps> = (props) => {
 const TableCoding: FC<{ codings: Array<Coding> }> = ({ codings }) => {
   return (
     <table>
-      <tr>
-        <th>Code</th>
-        <th>Display</th>
-        <th>System</th>
-        <th></th>
-      </tr>
-      {codings.map((coding) => (
-        <TableRowCoding coding={coding} />
-      ))}
+      <thead>
+        <tr>
+          <th>
+            <b>Code</b>
+          </th>
+          <th>
+            <b>Display</b>
+          </th>
+          <th>
+            <b>System</b>
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {codings.map((coding) => (
+          <TableRowCoding coding={coding} key={coding.id} />
+        ))}
+      </tbody>
     </table>
   );
 };
@@ -62,6 +73,7 @@ export const IndexPage: FC = () => {
     event.preventDefault();
     setCodings([
       {
+        id: "1",
         code: "123",
         display: "Test",
         system: "http://test.com",
@@ -71,8 +83,14 @@ export const IndexPage: FC = () => {
   return (
     <div className={styles.pageContainer}>
       <h1 className="title">FHIR Roast Terminology Service</h1>
+
       <SearchForm onSubmit={searchFormHandler} />
-      <TableCoding codings={codings} />
+
+      <hr />
+
+      <div className={styles.content}>
+        <TableCoding codings={codings} />
+      </div>
     </div>
   );
 };

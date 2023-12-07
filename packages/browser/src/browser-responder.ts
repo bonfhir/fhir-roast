@@ -2,6 +2,7 @@ import { renderToReadableStream } from "react-dom/server";
 import { build } from "bun";
 import App from "./app";
 import { ResponderInterface } from "@fhir-roast/core";
+import lightningcss from "bun-lightningcss";
 
 export class BrowserResponder implements ResponderInterface {
   buildsMatchers: Map<string, () => Response>;
@@ -37,6 +38,7 @@ export class BrowserResponder implements ResponderInterface {
         whitespace: true,
       },
       outdir: "./build",
+      plugins: [lightningcss()],
     });
 
     // build failed
@@ -67,17 +69,16 @@ export class BrowserResponder implements ResponderInterface {
 
   serveBuild(request: Request) {
     const { pathname } = new URL(request.url);
-
     const buildFileRequest = this.buildsMatchers.get(pathname);
     if (buildFileRequest) {
       return buildFileRequest();
     }
   }
 
-  async serveApp(req: Request) {
-    const { pathname } = new URL(req.url);
+  async serveApp(request: Request) {
+    const { pathname } = new URL(request.url);
 
-    if (pathname === "/" && req.method === "GET") {
+    if (pathname === "/" && request.method === "GET") {
       const stream = await renderToReadableStream(App(), {
         bootstrapModules: ["./hydrate.js"],
       });
