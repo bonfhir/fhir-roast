@@ -13,7 +13,10 @@ export abstract class TerminologyDatabase implements DatabaseInterface {
   abstract read<ReturnType extends Resource>(
     args: ReadArgs
   ): ReturnType | undefined;
-  abstract search(): CodeableConcept | CodeableConcept[] | undefined;
+  abstract search<ReturnType extends Resource>():
+    | ReturnType
+    | ReturnType[]
+    | undefined;
   abstract subsumes(args: Partial<SubsumesArgs>): CodeableConcept | undefined;
   abstract lookup(args: Partial<Coding>): CodeableConcept | undefined;
 

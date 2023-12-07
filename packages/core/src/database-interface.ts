@@ -31,7 +31,7 @@ export interface DatabaseInterface {
   ): ReturnType | undefined;
   search<ReturnType extends Resource>(
     args: Partial<SearchArgs>
-  ): ReturnType | undefined;
+  ): ReturnType | ReturnType[] | undefined;
   lookup: (args: Partial<Coding>) => CodeableConcept | undefined;
   validateCode: (
     args: Partial<Coding | CodeableConcept | CodeSystem>

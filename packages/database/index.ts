@@ -1,8 +1,8 @@
-import { DatabasePlugin } from "./database-plugin";
-import { NaiveDatabase } from "./naive-database";
-import { SQLiteDatabase } from "./sqlite-database";
-import { TerminologyDatabase } from "./terminology-database";
-import { type TerminologyRecord } from "./terminology-record";
+import { DatabasePlugin } from "./src/database-plugin";
+import { NaiveDatabase } from "./src/naive-database";
+import { SQLiteDatabase } from "./src/sqlite-database";
+import { TerminologyDatabase } from "./src/terminology-database";
+import { type TerminologyRecord } from "./src/terminology-record";
 export {
   DatabasePlugin,
   NaiveDatabase,

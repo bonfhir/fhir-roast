@@ -1,10 +1,5 @@
 import { Database as BunSQLiteDatabase } from "bun:sqlite";
-import {
-  CodeSystem,
-  CodeableConcept,
-  Coding,
-  Resource,
-} from "@bonfhir/core/r5";
+import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
 import { Terminology } from "@fhir-roast/terminology";
 import { TerminologyDatabase } from "./terminology-database";
 import { TerminologyRecord } from "./terminology-record";
@@ -31,7 +26,7 @@ export class SQLiteDatabase extends TerminologyDatabase {
     throw new Error("Method not implemented.");
   }
 
-  search(): CodeableConcept | CodeableConcept[] | undefined {
+  search<ReturnType extends Resource>(): ReturnType | ReturnType[] | undefined {
     throw new Error("Method not implemented.");
   }
 
