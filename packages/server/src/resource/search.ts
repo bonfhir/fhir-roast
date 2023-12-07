@@ -5,7 +5,7 @@ import { searchParametersReducer } from "../parameters";
 export function search<ReturnType extends Resource>(
   database: DatabaseInterface | undefined,
   parameters: Parameters
-): Promise<ReturnType | undefined> {
+): Promise<ReturnType | ReturnType[] | undefined> {
   if (!database) {
     throw new Error("Database not found");
   }
