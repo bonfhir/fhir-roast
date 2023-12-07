@@ -1,6 +1,6 @@
-import { BrowserPlugin } from "./browser-plugin";
-import IndexPage from "./pages/index";
-import App from "./app";
-import { BrowserResponder } from "./browser-responder";
+import { BrowserPlugin } from "./src/browser-plugin";
+import IndexPage from "./src/pages/index";
+import App from "./src/app";
+import { BrowserResponder } from "./src/browser-responder";
 export { App, IndexPage, BrowserPlugin, BrowserResponder };
 export default BrowserPlugin;

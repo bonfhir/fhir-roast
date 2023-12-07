@@ -1,6 +1,5 @@
 import { renderToReadableStream } from "react-dom/server";
 import { build } from "bun";
-import { Server as BunServer } from "bun";
 import App from "./app";
 import { ResponderInterface } from "@fhir-roast/core";
 
@@ -29,7 +28,7 @@ export class BrowserResponder implements ResponderInterface {
     if (this.built) return;
 
     const builds = await build({
-      entrypoints: ["./packages/browser/hydrate.tsx"],
+      entrypoints: ["./packages/browser/src/hydrate.tsx"],
       target: "browser",
       splitting: true,
       minify: {
