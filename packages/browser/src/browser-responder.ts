@@ -1,93 +1,91 @@
-import { renderToReadableStream } from "react-dom/server";
-import { build } from "bun";
-import App from "./app";
 import { ResponderInterface } from "@fhir-roast/core";
-import lightningcss from "bun-lightningcss";
+import { readdir, readFileSync, type Dirent } from "fs";
 
 export class BrowserResponder implements ResponderInterface {
-  buildsMatchers: Map<string, () => Response>;
+  buildsMatchers: Map<string, () => Promise<Response | void>>;
   built: boolean;
 
   constructor() {
-    this.buildsMatchers = new Map<string, () => Response>();
+    this.buildsMatchers = new Map<string, () => Promise<Response | void>>();
     this.built = false;
   }
 
   async respond(request: Request) {
-    const buildFileRequest = this.serveBuild(request);
-    if (buildFileRequest) {
-      return buildFileRequest;
+    const serveFile = await this.serve(request);
+    if (serveFile) {
+      return serveFile;
     }
 
-    const appRequest = await this.serveApp(request);
-    if (appRequest) {
-      return appRequest;
+    const serveRoot = await this.serveRoot(request);
+    if (serveRoot) {
+      return serveRoot;
+    }
+  }
+
+  private getMime(file: Dirent): string {
+    switch (file.name.split(".").pop()) {
+      case "css":
+        return "text/css";
+      case "js":
+        return "text/javascript";
+      case "html":
+        return "text/html";
+      case "ico":
+        return "image/x-icon";
+      case "png":
+        return "image/png";
+      case "svg":
+        return "image/svg+xml";
+      case "json":
+        return "application/json";
+      default:
+        return "application/octet-stream";
     }
   }
 
   async init() {
-    if (this.built) return;
-
-    const builds = await build({
-      entrypoints: ["./packages/browser/src/hydrate.tsx"],
-      target: "browser",
-      splitting: true,
-      minify: {
-        identifiers: true,
-        syntax: true,
-        whitespace: true,
+    readdir(
+      "./packages/browser/dist",
+      {
+        recursive: true,
+        withFileTypes: true,
       },
-      outdir: "./build",
-      plugins: [lightningcss()],
-    });
-
-    // build failed
-    if (!builds.success) {
-      throw new Error("Build failed");
-    }
-
-    // display build logs
-    if (builds.logs) {
-      for (const log of builds.logs) {
-        console.log(log);
+      (err, files) => {
+        if (err) throw err;
+        for (const file of files) {
+          if (file.isFile()) {
+            console.log(file.name);
+            const path = ["/", file.name].join("");
+            const filePath = ["./packages/browser/dist", file.name].join("/");
+            const responder = async () =>
+              new Response(readFileSync(filePath), {
+                headers: {
+                  "Content-Type": this.getMime(file),
+                },
+              });
+            this.buildsMatchers.set(path, responder);
+          }
+        }
       }
-    }
-
-    for (const build of builds.outputs) {
-      const path = ["/", build.path.split("/").pop()].join("");
-      const responder = () =>
-        new Response(build.stream(), {
-          headers: {
-            "Content-Type": build.type,
-          },
-        });
-      this.buildsMatchers.set(path, responder);
-    }
-
-    this.built = true;
+    );
   }
 
-  serveBuild(request: Request) {
+  private async serve(request: Request) {
     const { pathname } = new URL(request.url);
-    const buildFileRequest = this.buildsMatchers.get(pathname);
-    if (buildFileRequest) {
-      return buildFileRequest();
+    const fileRequest = this.buildsMatchers.get(pathname);
+    if (fileRequest) {
+      return await fileRequest();
     }
   }
 
-  async serveApp(request: Request) {
+  private async serveRoot(request: Request) {
     const { pathname } = new URL(request.url);
 
     if (pathname === "/" && request.method === "GET") {
-      const stream = await renderToReadableStream(App(), {
-        bootstrapModules: ["./hydrate.js"],
-      });
-
-      return new Response(stream, {
-        headers: {
-          "content-type": "text/html",
-        },
-      });
+      const root = this.buildsMatchers.get("/index.html");
+      if (root) {
+        return await root();
+      }
     }
   }
 }

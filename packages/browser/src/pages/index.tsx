@@ -1,7 +1,7 @@
 import { Coding } from "@bonfhir/core/r5";
 import styles from "./index.module.css";
-
 import { FC, useState } from "react";
+import SearchForm from "../components/SearchForm";
 
 const jsonUrl = (coding: Coding) => {
   return `/CodeSystem/$lookup?system=${coding.system}&code=${coding.code}&_format=json`;
@@ -9,17 +9,6 @@ const jsonUrl = (coding: Coding) => {
 
 const xmlUrl = (coding: Coding) => {
   return `/CodeSystem/$lookup?system=${coding.system}&code=${coding.code}&_format=xml`;
-};
-
-interface SearchFormProps extends React.FormHTMLAttributes<HTMLFormElement> {}
-
-const SearchForm: FC<SearchFormProps> = (props) => {
-  return (
-    <form {...props}>
-      <input type="text" placeholder="Query" />
-      <input type="submit" value="Search" />
-    </form>
-  );
 };
 
 const TableCoding: FC<{ codings: Array<Coding> }> = ({ codings }) => {
@@ -82,7 +71,7 @@ export const IndexPage: FC = () => {
   };
   return (
     <div className={styles.pageContainer}>
-      <h1 className="title">FHIR Roast Terminology Service</h1>
+      <h1 className={styles.title}>FHIR Roast Terminology Service</h1>
 
       <SearchForm onSubmit={searchFormHandler} />
 
