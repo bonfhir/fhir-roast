@@ -1,3 +1,4 @@
+import { createLogger, type ILogObj, type Logger } from "@fhir-roast/utils";
 import { PluginManager } from "./plugin-manager";
 
 interface DatabaseInterface<T = any> {
@@ -10,8 +11,11 @@ interface ResponderInterface<T = any> {
 
 export class App {
   pluginManager = new PluginManager<App>();
+  log: Logger<ILogObj>;
 
-  constructor() {}
+  constructor() {
+    this.log = createLogger("app");
+  }
 
   async start() {
     await this.pluginManager.loadDir(this, "./packages");

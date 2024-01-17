@@ -1,3 +1,4 @@
+import fs from "fs";
 import { Database as BunSQLiteDatabase } from "bun:sqlite";
 import { CodeableConcept, Coding, Resource } from "@bonfhir/core/r5";
 import { Terminology } from "@fhir-roast/terminology";
@@ -5,22 +6,36 @@ import { TerminologyDatabase } from "./terminology-database";
 import { TerminologyRecord } from "./terminology-record";
 import { ReadArgs, SubsumesArgs } from "@fhir-roast/core";
 
+const ROOT_DB_DIR = "data/db";
+
 export class SQLiteDatabase extends TerminologyDatabase {
-  private database: BunSQLiteDatabase;
+  private _database: BunSQLiteDatabase | undefined;
 
   constructor() {
     super();
-    this.database = new BunSQLiteDatabase(":memory:");
-    for (const query of [
-      "create table terminology_records( conceptId text, term text, system text)",
-      "create index terminology_records_conceptId_index on terminology_records(conceptId)",
-      "create index terminology_records_system_index on terminology_records(system)",
-    ])
-      this.database.query(query).run();
   }
 
   async start() {}
   async stop() {}
+
+  get database(): BunSQLiteDatabase {
+    if (!this._database) {
+      if (!fs.existsSync(ROOT_DB_DIR)) {
+        fs.mkdirSync(ROOT_DB_DIR);
+      }
+
+      this._database = new BunSQLiteDatabase("data/db/mydb.sqlite", {
+        create: true,
+      });
+      for (const query of [
+        "create table if not exists terminology_records( conceptId text, term text, system text)",
+        "create index if not exists terminology_records_conceptId_index on terminology_records(conceptId)",
+        "create index if not exists terminology_records_system_index on terminology_records(system)",
+      ])
+        this.database.query(query).run();
+    }
+    return this._database;
+  }
 
   read<ReturnType extends Resource>(args: ReadArgs): ReturnType | undefined {
     throw new Error("Method not implemented.");
@@ -63,7 +78,7 @@ export class SQLiteDatabase extends TerminologyDatabase {
     };
   }
 
-  protected importedRecords(
+  protected importRecords(
     terminology: Terminology,
     records: TerminologyRecord[]
   ): void {
@@ -74,6 +89,12 @@ export class SQLiteDatabase extends TerminologyDatabase {
     console.log(
       `Imported ${this.getRecordsCount()} records from ${terminology.name}`
     );
+  }
+
+  protected isImported(): boolean {
+    // naive approach to import status
+    // defer proper mechanism to when data storage design is finalized
+    return this.getRecordsCount() > 0;
   }
 
   private getRecordsCount(): number {

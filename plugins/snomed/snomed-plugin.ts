@@ -25,13 +25,13 @@ export class SNOMEDPlugin extends PluginTemplate<App> {
   }
 
   async start() {
-    console.log("snomed plugin started");
+    this.log.info("snomed plugin started");
     this.terminologyManager?.register(this.terminology);
     this.getDatabase()?.register(this.terminology);
   }
 
   async stop() {
-    console.log("snomed plugin stopped");
+    this.log.info("snomed plugin stopped");
     this.getDatabase()?.unregister(this.terminology);
     this.terminologyManager?.unregister(this.terminology);
   }

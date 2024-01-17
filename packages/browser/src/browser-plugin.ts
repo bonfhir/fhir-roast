@@ -14,12 +14,12 @@ export class BrowserPlugin extends PluginTemplate<App> {
   }
 
   async start() {
-    console.log("browser plugin started");
+    this.log.info("browser plugin started");
     await this.browserResponder.init();
   }
 
   async stop() {
-    console.log("browser plugin stopped");
+    this.log.info("browser plugin stopped");
   }
 
   getResponder(): ResponderInterface {

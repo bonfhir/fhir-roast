@@ -12,10 +12,10 @@ export class TerminologyPlugin extends PluginTemplate<App> {
   }
 
   async start() {
-    console.log("terminology plugin started");
+    this.log.info("terminology plugin started");
   }
 
   async stop() {
-    console.log("terminology plugin stopped");
+    this.log.info("terminology plugin stopped");
   }
 }

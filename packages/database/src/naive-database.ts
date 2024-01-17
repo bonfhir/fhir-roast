@@ -33,7 +33,7 @@ export class NaiveDatabase extends TerminologyDatabase {
     throw new Error("Method not implemented.");
   }
 
-  protected importedRecords(
+  protected importRecords(
     terminology: Terminology,
     records: TerminologyRecord[]
   ): void {
@@ -44,6 +44,10 @@ export class NaiveDatabase extends TerminologyDatabase {
     console.log(
       `Imported ${this.records.length} records from ${terminology.name}`
     );
+  }
+
+  protected isImported(): boolean {
+    return this.records.length > 0;
   }
 
   protected removeRecords(terminology: Terminology): void {

@@ -1,0 +1,3 @@
+{
+  "extends": "@fhir-roast/typescript-config"
+}

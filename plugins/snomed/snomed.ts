@@ -11,9 +11,9 @@ export class SNOMED extends Terminology {
   }
 
   import(): TerminologyRecordInterface[] {
-    console.log("Importing SNOMED ...");
+    this.log.info("Importing SNOMED ...");
     return importRecords(
-      "./data/SNOMED/sct2_Description_Full-en_US1000124_20230301.txt"
+      "./data/SNOMED/sct2_Description_Full-en_US1000124_20230901.txt"
     );
   }
 

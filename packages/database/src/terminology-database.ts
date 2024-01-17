@@ -68,7 +68,9 @@ export abstract class TerminologyDatabase implements DatabaseInterface {
   // terminologies
   async register(terminology: Terminology) {
     // batch import
-    this.importedRecords(terminology, terminology.import());
+    if (!this.isImported())
+      this.importRecords(terminology, terminology.import());
+
     this.finders.push(terminology.finder());
   }
 
@@ -80,10 +82,12 @@ export abstract class TerminologyDatabase implements DatabaseInterface {
     );
   }
 
-  protected abstract importedRecords(
+  protected abstract importRecords(
     terminology: Terminology,
     records: TerminologyRecord[]
   ): void;
+
+  protected abstract isImported(): boolean;
 
   protected abstract removeRecords(terminology: Terminology): void;
 }

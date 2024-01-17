@@ -1,5 +1,5 @@
 import { ResponderInterface } from "@fhir-roast/core";
-import { readdir, readFileSync, type Dirent } from "fs";
+import { readdir, readFileSync, existsSync, type Dirent } from "fs";
 
 export class BrowserResponder implements ResponderInterface {
   buildsMatchers: Map<string, () => Promise<Response | void>>;
@@ -44,6 +44,11 @@ export class BrowserResponder implements ResponderInterface {
   }
 
   async init() {
+    if (!existsSync("./packages/browser/dist")) {
+      console.error("Browser build not found, skipping...");
+      return;
+    }
+
     readdir(
       "./packages/browser/dist",
       {

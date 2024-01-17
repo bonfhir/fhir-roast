@@ -19,6 +19,7 @@ import {
   UsageContext,
 } from "@bonfhir/core/r5";
 import { TerminologyRecordInterface } from "@fhir-roast/core";
+import { createLogger, type ILogObj, type Logger } from "@fhir-roast/utils";
 
 export abstract class Terminology implements CodeSystem {
   resourceType: "CodeSystem";
@@ -68,6 +69,7 @@ export abstract class Terminology implements CodeSystem {
   implicitRules?: string | undefined;
   language?: string | undefined;
   meta?: Meta | undefined;
+  log: Logger<ILogObj>;
 
   constructor(name: string, version: string, url: string) {
     this.resourceType = "CodeSystem";
@@ -76,6 +78,8 @@ export abstract class Terminology implements CodeSystem {
     this.url = url;
     this.content = "not-present";
     this.status = "active";
+
+    this.log = createLogger(`terminology:${name}`);
   }
 
   // TODO: this will probably change a lot

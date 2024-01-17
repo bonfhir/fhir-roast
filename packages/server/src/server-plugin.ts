@@ -4,14 +4,10 @@ import {
   type DatabaseInterface,
   type ResponderInterface,
 } from "@fhir-roast/core";
-import { ILogObj, Logger } from "tslog";
+import { type ILogObj, createLogger } from "@fhir-roast/utils";
 import { Router } from "./router";
 import { Server as BunServer } from "bun";
 import { Configuration } from "./configuration";
-
-const log = new Logger<ILogObj>({
-  minLevel: process.env.LOG_LEVEL ? parseInt(process.env.LOG_LEVEL) : 3,
-});
 
 export class ServerPlugin extends PluginTemplate<App> {
   name: string = "server";
@@ -25,7 +21,7 @@ export class ServerPlugin extends PluginTemplate<App> {
     super(app);
     this.server = null;
     this.config = new Configuration();
-    this.router = new Router(this, log);
+    this.router = new Router(this, this.log);
   }
 
   async start() {
@@ -36,11 +32,11 @@ export class ServerPlugin extends PluginTemplate<App> {
       error: (err) => this.router.error(err),
     });
 
-    console.log(`Listening on http://localhost:${this.server.port} ...`);
+    this.log.info(`Listening on http://localhost:${this.server.port} ...`);
   }
 
   async stop() {
-    console.log("Stopping ...");
+    this.log.info("Stopping ...");
     this.server?.stop();
   }
 
